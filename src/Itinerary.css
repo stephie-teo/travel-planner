@@ -1,0 +1,905 @@
+/* ==================== Itinerary Page ==================== */
+
+.itinerary-page {
+  min-height: 100vh;
+  background: #f3f5f8;
+  padding-bottom: 90px;
+}
+
+/* ==================== Header ==================== */
+
+.itinerary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 20px 22px;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.itinerary-header p {
+  margin: 0 0 6px;
+  color: #8a8f98;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.itinerary-header h1 {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+
+/* ==================== Add Button ==================== */
+
+.add-button {
+  border: 1px solid #e5e5e5;
+  background: #f3f3f3;
+  color: #333;
+  border-radius: 12px;
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.add-button:hover {
+  background: #e9e9e9;
+  transform: translateY(-1px);
+}
+
+.add-button:active {
+  transform: translateY(0);
+}
+
+/* ==================== Date Selector ==================== */
+
+.date-selector {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 16px 20px 14px;
+  scrollbar-width: none;
+  background: #ffffff;
+}
+
+.date-selector::-webkit-scrollbar {
+  display: none;
+}
+
+.date-selector button {
+  min-width: 60px;
+  border: 1px solid #eeeeee;
+  border-radius: 14px;
+  background: #f7f7f7;
+  color: #555;
+  padding: 10px 8px;
+  flex-shrink: 0;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.date-selector button:hover {
+  background: #eeeeee;
+  transform: translateY(-1px);
+}
+
+.date-selector button.selected {
+  background: #222;
+  border-color: #222;
+  color: #ffffff;
+}
+
+.date-selector span {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.date-selector small {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ==================== Activity Form ==================== */
+
+.activity-form {
+  margin: 20px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.activity-form h2 {
+  margin: 0 0 18px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.activity-form label {
+  display: block;
+  margin-bottom: 15px;
+  color: #444;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.activity-form input,
+.activity-form textarea {
+  width: 100%;
+  margin-top: 7px;
+  padding: 11px 12px;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #222;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.activity-form input:focus,
+.activity-form textarea:focus {
+  border-color: #999;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.activity-form textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+/* ==================== Form Buttons ==================== */
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.form-buttons button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  background: #f3f3f3;
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-buttons button:hover {
+  background: #e9e9e9;
+}
+
+.form-buttons button:active {
+  transform: scale(0.98);
+}
+
+.form-buttons button[type="submit"] {
+  background: #222;
+  border-color: #222;
+  color: #ffffff;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background: #333;
+}
+
+/* ==================== Activities ==================== */
+
+.activities {
+  padding: 20px;
+}
+
+.activities > h2 {
+  margin: 0 0 15px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+/* ==================== Activity Card ==================== */
+
+.activity-card {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.activity-card:hover {
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.activity-time {
+  width: 50px;
+  flex-shrink: 0;
+  color: #444;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.activity-line {
+  width: 2px;
+  flex-shrink: 0;
+  background: #dddddd;
+  margin-right: 15px;
+  border-radius: 2px;
+}
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-content h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.activity-content p {
+  margin: 5px 0;
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* ==================== Activity Actions ==================== */
+
+.activity-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 11px;
+}
+
+.edit-button,
+.delete-button {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 0;
+  transition: opacity 0.2s ease;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  opacity: 0.65;
+}
+
+.edit-button {
+  color: #555;
+}
+
+.delete-button {
+  color: #c44;
+}
+
+/* ==================== Empty State ==================== */
+
+.empty-state {
+  text-align: center;
+  padding: 55px 20px;
+  color: #888;
+}
+
+.empty-state span {
+  font-size: 40px;
+}
+
+.empty-state p {
+  margin: 10px 0 5px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.empty-state small {
+  color: #aaa;
+  font-size: 12px;
+}
+
+/* ==================== Mobile ==================== */
+
+@media (max-width: 480px) {
+  .itinerary-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .date-selector {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .activities {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .activity-form {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .itinerary-header h1 {
+    font-size: 22px;
+  }
+
+  .add-button {
+    padding: 9px 12px;
+  }
+
+  .date-selector button {
+    min-width: 56px;
+  }
+
+  .activity-card {
+    padding: 14px;
+  }
+
+  .activity-time {
+    width: 44px;
+    font-size: 12px;
+  }
+
+  .activity-line {
+    margin-right: 12px;
+  }
+}
+
+
+.itinerary-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e8eaf0;
+  border-radius: 16px;
+}
+
+.itinerary-mode label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.itinerary-mode select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d8dce5;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  outline: none;
+}
+
+.itinerary-mode select:focus {
+  border-color: #6b8afd;
+  box-shadow: 0 0 0 3px rgba(107, 138, 253, 0.12);
+}
+
+.itinerary-mode p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ================================
+   ITINERARY DESKTOP LAYOUT
+================================ */
+
+@media (min-width: 768px) {
+
+  .itinerary-page {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding-bottom: 50px;
+    background: #ffffff;
+  }
+
+  .itinerary-header {
+    padding: 36px 36px 28px;
+    border-bottom: 1px solid #e8edf5;
+  }
+
+  .itinerary-header h1 {
+    font-size: 30px;
+    color: #1d2a40;
+    font-weight: 750;
+  }
+
+  .itinerary-mode {
+    margin: 24px 36px;
+    padding: 22px 24px;
+    border-color: #e8edf5;
+    border-radius: 18px;
+  }
+
+  .date-selector {
+    padding: 20px 36px;
+    gap: 12px;
+  }
+
+  .date-selector button {
+    min-width: 75px;
+    padding: 14px 12px;
+  }
+
+  .activities {
+    padding: 28px 36px;
+  }
+
+  .activities > h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .activity-card {
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    border-color: #e8edf5;
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(37, 65, 112, 0.035);
+  }
+
+  .activity-content h3 {
+    font-size: 17px;
+  }
+
+  .activity-content p {
+    font-size: 13px;
+  }
+
+  .activity-form {
+    max-width: 720px;
+    margin: 24px 36px;
+    padding: 28px;
+  }
+}
+
+/* ================================
+   ITINERARY BLUE THEME
+================================ */
+
+/* Add Activity Button */
+.itinerary-header .add-button {
+  background: #3978e8;
+  border-color: #3978e8;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(57, 120, 232, 0.15);
+}
+
+.itinerary-header .add-button:hover {
+  background: #285fc5;
+  border-color: #285fc5;
+}
+
+/* Date Selector */
+.date-selector button {
+  background: #f7f9fc;
+  border-color: #e8edf5;
+  color: #60718a;
+}
+
+.date-selector button:hover {
+  background: #eaf2ff;
+  border-color: #cbdcf8;
+}
+
+.date-selector button.selected {
+  background: #3978e8;
+  border-color: #3978e8;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(57, 120, 232, 0.18);
+}
+
+/* Activity Cards */
+.activity-card {
+  border-color: #e8edf5;
+}
+
+.activity-card:hover {
+  border-color: #d8e5f8;
+  box-shadow: 0 8px 24px rgba(37, 65, 112, 0.08);
+}
+
+.activity-line {
+  background: #b8d0fa;
+}
+
+.activity-time {
+  color: #3978e8;
+}
+
+.activity-content h3 {
+  color: #25334a;
+}
+
+/* Form */
+.activity-form {
+  border-color: #e8edf5;
+}
+
+.activity-form input:focus,
+.activity-form textarea:focus {
+  border-color: #3978e8;
+  box-shadow: 0 0 0 3px rgba(57, 120, 232, 0.12);
+}
+
+/* Save Activity */
+.form-buttons button[type="submit"] {
+  background: #3978e8;
+  border-color: #3978e8;
+  color: #ffffff;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background: #285fc5;
+  border-color: #285fc5;
+}
+
+/* Edit Activity */
+.activity-actions .edit-button {
+  color: #3978e8;
+}
+
+/* Personal / Group Selector */
+.itinerary-mode {
+  border-color: #e8edf5;
+  box-shadow: 0 4px 16px rgba(37, 65, 112, 0.035);
+}
+
+.itinerary-mode select:focus {
+  border-color: #3978e8;
+  box-shadow: 0 0 0 3px rgba(57, 120, 232, 0.12);
+}
+
+/* ================================
+   ACTIVITY FORM LAYOUT
+================================ */
+
+.activity-form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.activity-form-row > label {
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .activity-form-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 16px;
+  }
+
+  .activity-form {
+    max-width: 720px;
+  }
+
+  .activity-form h2 {
+    font-size: 21px;
+    color: #25334a;
+  }
+
+  .activity-form textarea {
+    min-height: 110px;
+  }
+
+  .form-buttons {
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+
+  .form-buttons button {
+    flex: 0 1 160px;
+  }
+}
+
+/* ================================
+   ITINERARY DATE SELECTOR POLISH
+================================ */
+
+.date-selector {
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+.date-selector button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 68px;
+  padding: 12px 10px;
+  border-radius: 16px;
+}
+
+.date-selector .date-weekday {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  opacity: 0.75;
+}
+
+.date-selector span {
+  font-size: 21px;
+  font-weight: 750;
+}
+
+.date-selector .date-month {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.date-selector button.selected {
+  transform: none;
+}
+
+.date-selector button.selected .date-weekday {
+  opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+  .date-selector button {
+    min-width: 82px;
+    padding: 15px 12px;
+  }
+}
+
+/* ================================
+   ACTIVITY TIMELINE POLISH
+================================ */
+
+/* Activity Card */
+.activities .activity-card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow: visible;
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.activities .activity-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbdcf8;
+  box-shadow: 0 8px 24px rgba(37, 65, 112, 0.08);
+}
+
+/* Time Column */
+.activities .activity-time {
+  width: 68px;
+  flex-shrink: 0;
+  padding-top: 2px;
+  color: #3978e8;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Timeline Vertical Line */
+.activities .activity-line {
+  position: relative;
+  width: 3px;
+  flex-shrink: 0;
+  margin-right: 20px;
+  background: #dce8fc;
+  border-radius: 10px;
+}
+
+/* Timeline Dot */
+.activities .activity-line::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border: 3px solid #3978e8;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px #eaf2ff;
+}
+
+/* Activity Details */
+.activities .activity-content {
+  flex: 1;
+  min-width: 0;
+  padding-left: 2px;
+}
+
+.activities .activity-content h3 {
+  margin: 0 0 10px;
+  color: #25334a;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.activities .activity-content p {
+  margin: 7px 0;
+  color: #758196;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Action Buttons */
+.activities .activity-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.activities .edit-button,
+.activities .delete-button {
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.activities .edit-button {
+  background: #eaf2ff;
+  color: #3978e8;
+}
+
+.activities .delete-button {
+  background: #fff1f1;
+  color: #d65b5b;
+}
+
+.activities .edit-button:hover {
+  background: #dce9ff;
+  opacity: 1;
+}
+
+.activities .delete-button:hover {
+  background: #ffe1e1;
+  opacity: 1;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .activities .activity-card {
+    padding: 16px 14px;
+  }
+
+  .activities .activity-time {
+    width: 52px;
+    font-size: 12px;
+  }
+
+  .activities .activity-line {
+    margin-right: 14px;
+  }
+
+  .activities .activity-content h3 {
+    font-size: 15px;
+  }
+}
+
+/* ================================
+   ITINERARY MODE SELECTOR POLISH
+================================ */
+
+.itinerary-mode {
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(37, 65, 112, 0.04);
+}
+
+.itinerary-mode label {
+  color: #25334a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.itinerary-mode select {
+  min-height: 46px;
+  background: #f8faff;
+  border: 1px solid #e1e8f3;
+  border-radius: 12px;
+  color: #25334a;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.itinerary-mode select:hover {
+  border-color: #b8d0fa;
+}
+
+.itinerary-mode select:focus {
+  border-color: #3978e8;
+  box-shadow: 0 0 0 3px rgba(57, 120, 232, 0.12);
+}
+
+.itinerary-mode p {
+  color: #758196;
+  font-size: 12px;
+}
+
+/* ================================
+   ITINERARY EMPTY STATE POLISH
+================================ */
+
+.itinerary-page .empty-state {
+  margin: 16px 0;
+  padding: 48px 24px;
+  background: #ffffff;
+  border: 1px dashed #d7e3f5;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.itinerary-page .empty-state span {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 42px;
+}
+
+.itinerary-page .empty-state p {
+  margin: 8px 0;
+  color: #25334a;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.itinerary-page .empty-state small {
+  color: #8a98ad;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .itinerary-page .empty-state {
+    padding: 36px 16px;
+  }
+}

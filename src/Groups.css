@@ -1,0 +1,138 @@
+/* Groups — consistent with Places, 1200px centered blue-and-white layout */
+.groups-page {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 0 110px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #25334a;
+}
+.groups-page *, .groups-page *::before, .groups-page *::after { box-sizing: border-box; }
+.groups-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 30px 20px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e8edf5;
+}
+.groups-header > div:first-child { min-width: 0; }
+.groups-header p { margin: 0 0 7px; color: #8491a5; font-size: 13px; font-weight: 600; letter-spacing: .2px; }
+.groups-header h1 { margin: 0 0 6px; color: #1d2a40; font-size: 26px; letter-spacing: -.5px; line-height: 1.25; }
+.groups-header span { color: #75849b; font-size: 13px; line-height: 1.5; }
+.group-header-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.groups-page button { font-family: inherit; transition: background .2s, border-color .2s, box-shadow .2s, transform .2s; }
+.groups-page button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.create-group-button, .save-group-button {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 43px; padding: 11px 17px;
+  border: 1px solid #3978e8; border-radius: 12px;
+  background: #3978e8; color: #fff;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(57,120,232,.14);
+}
+.create-group-button { flex-shrink: 0; }
+.create-group-button:hover:not(:disabled), .save-group-button:hover:not(:disabled) { background: #285fc5; border-color: #285fc5; transform: translateY(-1px); }
+/* The second header action (Join Group) is intentionally secondary. */
+.groups-header .group-header-actions .create-group-button + .create-group-button {
+  background: #f5f8ff; border-color: #dce8fc; color: #3978e8; box-shadow: none;
+}
+.groups-header .group-header-actions .create-group-button + .create-group-button:hover:not(:disabled) { background: #eaf2ff; border-color: #bfd5fb; }
+.delete-group-button {
+  min-height: 43px; padding: 11px 16px; border: 1px solid #ffd9d9;
+  border-radius: 12px; background: #fff1f1; color: #c24141;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.delete-group-button:hover:not(:disabled) { background: #ffe3e3; }
+/* The selected-group view has no .groups-header in the current JSX. */
+.groups-page > .group-header-actions {
+  padding: 24px 20px; background: #fff; border-bottom: 1px solid #e8edf5;
+}
+.groups-page > .group-header-actions .create-group-button {
+  color: #3978e8; background: #f5f8ff; border-color: #dce8fc; box-shadow: none;
+}
+.groups-page > .group-header-actions .create-group-button:hover:not(:disabled) { background: #eaf2ff; }
+.groups-content { padding: 24px 20px; }
+.group-form, .group-card, .groups-empty {
+  min-width: 0; border: 1px solid #e8edf5; border-radius: 18px;
+  background: #fff; box-shadow: 0 4px 16px rgba(37,65,112,.04);
+}
+.group-form { max-width: 100%; margin: 0 0 22px; padding: 24px; }
+.group-form h2 { margin: 0 0 16px; color: #25334a; font-size: 20px; line-height: 1.4; }
+.group-form > p { margin: -4px 0 16px; color: #75849b; font-size: 13px; line-height: 1.65; }
+.group-form form { min-width: 0; }
+.group-form label { display: block; margin: 15px 0 8px; color: #34445d; font-size: 13px; font-weight: 700; }
+.group-form input {
+  display: block; width: 100%; min-width: 0; min-height: 46px;
+  padding: 11px 13px; border: 1px solid #e1e8f3; border-radius: 11px;
+  background: #f8faff; color: #25334a; font: inherit; font-size: 14px; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.group-form input:focus { border-color: #3978e8; box-shadow: 0 0 0 3px rgba(57,120,232,.12); }
+.group-form input:disabled { background: #f3f5f9; color: #64748b; cursor: not-allowed; }
+.group-form-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.cancel-group-button {
+  min-height: 43px; padding: 11px 17px; border: 1px solid #e1e8f3;
+  border-radius: 11px; background: #f3f6fb; color: #56657b;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.cancel-group-button:hover:not(:disabled) { background: #e9eef8; }
+.groups-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 16px; }
+.group-card { display: flex; align-items: flex-start; gap: 14px; padding: 21px; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.groups-list > .group-card:hover { transform: translateY(-2px); border-color: #d7e5fa; box-shadow: 0 8px 22px rgba(37,65,112,.08); }
+.group-card-icon { display: flex; align-items: center; justify-content: center; flex: 0 0 48px; width: 48px; height: 48px; border-radius: 14px; background: #eef4ff; font-size: 23px; }
+.group-card-info { flex: 1; min-width: 0; }
+.group-card-info h2 { margin: 0 0 8px; color: #25334a; font-size: 16px; line-height: 1.4; overflow-wrap: anywhere; }
+.group-card-info p { margin: 5px 0; color: #75849b; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.groups-empty { padding: 54px 20px; text-align: center; border-style: dashed; }
+.groups-empty > span { display: inline-block; font-size: 40px; }
+.groups-empty h2 { margin: 14px 0 8px; color: #25334a; font-size: 20px; }
+.groups-empty p { margin: 0; color: #75849b; font-size: 13px; line-height: 1.6; }
+.groups-message { margin: 0 0 18px; padding: 13px 15px; border: 1px solid #dcefe5; border-radius: 11px; background: #f2fbf7; color: #17845a; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.groups-error { margin: 0 0 18px; padding: 13px 15px; border: 1px solid #ffdcdc; border-radius: 11px; background: #fff1f1; color: #b42318; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.copy-invite-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; margin-top: 12px; padding: 8px 12px; border: 1px solid #dce8fc; border-radius: 9px; background: #eaf2ff; color: #3978e8; font-size: 12px; font-weight: 700; cursor: pointer; }
+.copy-invite-button:hover:not(:disabled) { background: #dce9ff; }
+/* Shared trip settings details */
+.date-row { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+.date-row label { min-width: 0; }
+.date-row input { margin-top: 8px; }
+.trip-preview { margin-top: 24px; padding: 21px; border: 1px solid #dce8fc; border-radius: 16px; background: #f3f7ff; }
+.trip-preview .preview-label { margin: 0 0 12px; color: #3978e8; font-size: 11px; font-weight: 800; letter-spacing: .9px; }
+.trip-preview h3 { margin: 0 0 12px; color: #1d2a40; font-size: 19px; overflow-wrap: anywhere; }
+.trip-preview p:not(.preview-label) { margin: 8px 0; color: #60718a; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+/* Member cards inside their own section */
+.group-form > .group-card { margin: 10px 0; box-shadow: none; background: #f9fbff; }
+.group-form > .group-card:last-child { margin-bottom: 0; }
+/* Invite code in the owner-only panel */
+.group-form > h2 + p + h2 { display: inline-block; max-width: 100%; margin: 4px 0 0; padding: 12px 16px; border: 1px dashed #bcd3fa; border-radius: 11px; background: #f3f7ff; color: #3978e8; font-size: 20px; letter-spacing: 2px; overflow-wrap: anywhere; }
+@media (min-width: 768px) {
+  .groups-page { padding-bottom: 50px; }
+  .groups-header { padding: 36px 36px 28px; }
+  .groups-header h1 { font-size: 30px; }
+  .groups-page > .group-header-actions { padding: 24px 36px; }
+  .groups-content { padding: 26px 36px; }
+  .group-form { padding: 28px; }
+  .groups-list { gap: 20px; }
+  .group-card { padding: 23px; }
+}
+@media (max-width: 600px) {
+  .groups-header { align-items: stretch; flex-direction: column; }
+  .groups-header .group-header-actions { width: 100%; }
+  .groups-header .group-header-actions button { flex: 1 1 140px; }
+  .date-row { grid-template-columns: 1fr; gap: 0; }
+}
+@media (max-width: 480px) {
+  .groups-header { padding: 24px 16px 20px; }
+  .groups-header h1 { font-size: 23px; }
+  .groups-page > .group-header-actions { padding: 18px 16px; }
+  .groups-page > .group-header-actions button { flex: 1 1 auto; }
+  .groups-content { padding: 16px; }
+  .group-form { padding: 20px; }
+  .groups-list { grid-template-columns: 1fr; }
+  .group-card { padding: 16px; gap: 11px; }
+  .group-card-icon { width: 42px; height: 42px; flex-basis: 42px; font-size: 20px; }
+  .group-form-actions button { flex: 1 1 120px; }
+}
