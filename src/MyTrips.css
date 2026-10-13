@@ -1,0 +1,18 @@
+.my-trips-page{width:100%;max-width:1200px;min-height:100vh;margin:0 auto;padding:32px 36px 110px;box-sizing:border-box;background:#fff;color:#25334a}
+.my-trips-header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;padding-bottom:24px;border-bottom:1px solid #e8edf5;margin-bottom:28px}
+.my-trips-header h1{font-size:30px;margin:6px 0 8px}.my-trips-header p{margin:0;color:#64748b}
+.my-trips-eyebrow{font-size:12px;font-weight:800;letter-spacing:1.4px;color:#3978e8!important}
+.my-trips-back{background:none;border:0;padding:0 0 18px;color:#3978e8;font:inherit;font-weight:600;cursor:pointer}
+.my-trips-primary{border:0;border-radius:12px;background:#3978e8;color:white;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+.my-trips-primary:disabled{opacity:.55;cursor:wait}
+.my-trips-form{border:1px solid #e3eaf5;border-radius:18px;background:#f8faff;padding:24px;margin-bottom:26px}
+.my-trips-form h2{font-size:19px;margin:0 0 20px}.my-trips-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:20px}
+.my-trips-fields label{display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:650}
+.my-trips-fields input{width:100%;box-sizing:border-box;border:1px solid #dbe4ef;border-radius:10px;background:white;padding:12px;font:inherit;color:#25334a}
+.my-trips-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.my-trips-card{border:1px solid #e3eaf5;border-radius:18px;padding:22px;background:white;box-shadow:0 5px 18px rgba(30,64,120,.04)}
+.my-trips-card-icon{font-size:28px}.my-trips-card h2{font-size:20px;margin:12px 0}.my-trips-card p{font-size:14px;color:#64748b;margin:8px 0}.my-trips-card strong{display:block;margin:16px 0;color:#3978e8}.my-trips-card small{display:block;line-height:1.5;color:#94a3b8}
+.my-trips-empty{text-align:center;border:1px dashed #dbe4ef;border-radius:18px;padding:40px 20px;color:#64748b}.my-trips-empty span{font-size:38px}.my-trips-empty h2{color:#25334a}
+.my-trips-error{padding:12px 16px;border-radius:10px;background:#fff1f2;color:#be123c;margin:0 0 20px}
+@media(max-width:800px){.my-trips-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.my-trips-page{padding:24px 16px 110px}.my-trips-header{align-items:flex-start;flex-direction:column}.my-trips-header h1{font-size:26px}.my-trips-fields,.my-trips-grid{grid-template-columns:1fr}.my-trips-form{padding:18px}}

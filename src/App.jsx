@@ -8,7 +8,7 @@ import Checklist from "./Checklist";
 import TravelInfo from "./TravelInfo";
 import TripSettings from "./TripSettings";
 import Groups from "./Groups";
-
+import MyTrips from "./MyTrips";
 import Login from "./Login";
 import Register from "./Register";
 
@@ -835,6 +835,13 @@ useEffect(() => {
 
                   <button
                     type="button"
+                    onClick={() => goToPage("my-trips")}
+                  >
+                    ✈️ My Trips
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={() => goToPage("groups")}
                   >
                     👥 My Groups
@@ -1547,6 +1554,10 @@ useEffect(() => {
       )}
 
 {/* ==================== OTHER PAGES ==================== */}
+
+{page === "my-trips" && (
+  <MyTrips onBack={() => goToPage("home")} />
+)}
 
 {page === "itinerary" && (
   <Itinerary
