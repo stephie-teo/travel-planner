@@ -903,3 +903,10 @@
     padding: 36px 16px;
   }
 }
+/* Step 2.9B — card refinement */
+.itinerary-page .activity-form,.itinerary-page .activity-card { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .itinerary-page :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .itinerary-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .itinerary-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}

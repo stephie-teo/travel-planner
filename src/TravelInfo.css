@@ -112,3 +112,11 @@ div.travel-info-page {
  .info-card{padding:16px}
 }
 @media(max-width:360px){.info-card-title{flex-wrap:wrap}.transport-route{flex-wrap:wrap}.info-card-heading h2{font-size:17px}}
+
+/* Step 2.9B — card refinement */
+.travel-info-page .info-card,.travel-info-page .info-form { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .travel-info-page :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .travel-info-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .travel-info-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}

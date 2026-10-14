@@ -1,0 +1,20 @@
+/* Step 2.3H: refreshed assigned expenses */
+.assigned-panel{background:linear-gradient(145deg,#fff 0%,#f6f9ff 100%);border:1px solid #e0eafa;border-radius:20px;padding:26px;margin:24px 0;color:#183052;box-shadow:0 8px 30px rgba(35,70,120,.06)}
+.assigned-panel h2{font-size:21px;margin:0 0 7px;letter-spacing:-.4px}.assigned-panel h3{margin:26px 0 12px;font-size:17px}.assigned-panel p,.assigned-panel small{color:#647997;line-height:1.55}.assigned-form{display:grid;gap:20px;margin:24px 0}.assigned-fields{display:grid;grid-template-columns:2fr 1fr 1.1fr;gap:14px}.assigned-panel label{display:grid;gap:7px;font-size:13px;font-weight:650;color:#27446e}.assigned-panel input:not([type=checkbox]):not([type=radio]),.assigned-panel select{width:100%;padding:12px 13px;border:1px solid #d7e2f2;border-radius:11px;background:white;color:#183052;box-sizing:border-box;min-height:43px}.assigned-panel input:focus-visible,.assigned-panel select:focus-visible{outline:none;border-color:#3978e8;box-shadow:0 0 0 3px rgba(57,120,232,.12)}.assigned-mode{display:flex;flex-wrap:wrap;gap:10px}.assigned-mode label{display:flex;align-items:center;gap:8px;background:#f0f5ff;border:1px solid #dae6fb;border-radius:12px;padding:12px 15px;cursor:pointer}.assigned-panel input[type=checkbox],.assigned-panel input[type=radio]{accent-color:#3978e8}.assigned-members{border:1px solid #e1eafa;border-radius:16px;padding:16px;background:#fff}.assigned-members>strong{display:block;font-size:15px}.assigned-members>small{display:block;margin:3px 0 13px}.assigned-member-row{display:grid;grid-template-columns:minmax(130px,1.6fr) repeat(2,minmax(95px,1fr));gap:14px;align-items:center;border-top:1px solid #edf1f8;padding:14px 0}.assigned-member-row>label:first-child{display:flex;align-items:center;gap:9px;overflow-wrap:anywhere}.assigned-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}.assigned-actions button{border:1px solid #cbdcf9;color:#3978e8;background:#fff;border-radius:10px;padding:10px 15px;font-weight:700;cursor:pointer}.assigned-form>.assigned-actions button:first-child{background:#3978e8;color:#fff;border-color:#3978e8}.assigned-actions button:disabled{opacity:.55;cursor:default}.assigned-history{display:flex;justify-content:space-between;gap:15px;padding:17px;background:#fff;border:1px solid #e5ecf7;border-radius:13px;margin:10px 0}.assigned-history small{display:block;margin-top:5px}.assigned-history>div:last-child{text-align:right}.assigned-note{font-size:12px}.assigned-success{color:#137a48!important;font-weight:650}.assigned-totals{display:flex;gap:16px;flex-wrap:wrap;border:1px solid #dbe6fb;padding:16px;border-radius:14px;margin:14px 0;background:#f7faff}.assigned-totals small{width:100%;color:#526889}@media(max-width:700px){.assigned-panel{padding:17px}.assigned-fields,.assigned-member-row{grid-template-columns:1fr}.assigned-history{flex-direction:column}.assigned-history>div:last-child{text-align:left}}
+
+/* Step 2.9B — card refinement */
+.assigned-panel .assigned-form { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .assigned-panel :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .assigned-panel :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .assigned-panel :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}
+
+
+/* Step 2.9C — assigned costs remain legible with long member names */
+.assigned-panel, .assigned-history, .assigned-member-row { min-width: 0; }
+.assigned-history > div { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .assigned-actions button { min-height: 42px; }
+  .assigned-totals { gap: 10px; }
+}

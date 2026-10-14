@@ -64,3 +64,22 @@
 @media(min-width:768px){.checklist-page{padding-bottom:50px}.checklist-header{padding:36px 36px 28px}.checklist-header h1{font-size:30px}.checklist-mode-switch{margin:26px 36px}.checklist-group-selector{margin:0 36px 28px;padding:24px}.checklist-error{margin:12px 36px}.checklist-content{padding:24px 36px}.checklist-progress-card{padding:30px}.checklist-form{max-width:820px;padding:28px}.checklist-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.checklist-page .form-buttons{justify-content:flex-end;margin-top:12px}.checklist-page .form-buttons button{flex:0 1 170px}.category-title h2{font-size:20px}.checklist-item{padding:18px 22px}}
 @media(max-width:600px){.checklist-item{gap:9px;padding:13px}.checklist-item-actions{gap:5px}.checklist-item-actions button{padding:7px;font-size:10px}.checklist-progress-card{padding:20px}}
 @media(max-width:380px){.checklist-header{padding:24px 16px 20px}.checklist-header h1{font-size:23px}.checklist-content{padding:16px}.checklist-mode-switch{margin:20px 16px}.checklist-group-selector{margin:0 16px 20px}.checklist-item-actions{flex-direction:column;align-items:stretch}.checklist-item-actions button{padding:5px 7px}.progress-top h2,.progress-top strong{font-size:23px}}
+
+/* Step 2.7: shared vs private checklist */
+.checklist-scope-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.checklist-scope-tabs button{border:1px solid #dce8fc;background:#f5f8ff;color:#516580;padding:10px 18px;border-radius:12px;font-weight:700;cursor:pointer}
+.checklist-scope-tabs button.active{background:#3978e8;border-color:#3978e8;color:white}
+.checklist-completion-choice{border:1px solid #dce8fc;border-radius:14px;padding:16px;margin:0 0 16px}
+.checklist-completion-choice legend{font-weight:700;font-size:13px;padding:0 6px}
+.checklist-completion-choice label{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:13px}
+.checklist-completion-choice input{width:auto;min-height:auto;margin:0;accent-color:#3978e8}
+
+.checklist-mode-warning{margin:0 0 14px;padding:11px 14px;border:1px solid #f7d9a4;border-radius:10px;background:#fff9ed;color:#8a540b;font-size:13px;line-height:1.5}
+
+/* Step 2.9B — card refinement */
+.checklist-page .checklist-form,.checklist-page .checklist-progress-card,.checklist-page .checklist-item { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .checklist-page :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .checklist-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .checklist-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}

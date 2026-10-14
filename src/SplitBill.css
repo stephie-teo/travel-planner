@@ -1,0 +1,72 @@
+.split-bill-section .split-bill-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.split-bill-heading h2{margin-bottom:5px}.split-bill-heading p,.split-bill-note{color:#718198;font-size:13px;line-height:1.6}.split-bill-heading>strong{color:#3978e8;background:#eef4ff;padding:9px 12px;border-radius:10px}.split-bill-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.split-bill-section select{display:block;width:100%;min-height:46px;padding:10px 13px;border:1px solid #e1e8f3;border-radius:11px;background:#f8faff;color:#25334a}.split-bill-members{margin:20px 0 0;padding:14px;border:1px solid #e1e8f3;border-radius:12px}.split-bill-members legend{font-size:13px;font-weight:700;color:#34445d;padding:0 6px}.split-bill-section .split-bill-member{display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:500}.split-bill-section .split-bill-member input{width:17px;height:17px;min-height:0;flex:none;accent-color:#3978e8}.split-bill-preview{margin-top:16px;padding:16px;background:#f3f7ff;border:1px solid #dce8fc;border-radius:12px}.split-bill-preview>strong{display:block;margin-bottom:10px;color:#3978e8}.split-bill-preview>div{display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:13px}.split-bill-history{margin-top:28px}.split-bill-history h3{font-size:17px}.split-bill-entry{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #e8edf5}.split-bill-entry>div{display:grid;gap:4px}.split-bill-entry small{color:#75849b}.split-bill-entry>b{color:#3978e8;white-space:nowrap}.split-bill-note{margin-top:18px}@media(max-width:600px){.split-bill-grid{grid-template-columns:1fr}}
+/* Step 2.3B — balances */
+.split-bill-balances{margin-top:28px;padding:20px;border:1px solid #dce8fc;border-radius:16px;background:#f8fbff}
+.split-bill-balance-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.split-bill-balances h3{margin:0 0 14px;color:#25334a;font-size:17px}
+.split-bill-balance-heading span,.split-bill-muted{color:#718198;font-size:12px;line-height:1.6}
+.split-bill-balance-list{margin-bottom:24px}
+.split-bill-balance-row,.split-bill-transfer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #e1eaf7;font-size:13px}
+.split-bill-balance-row>span,.split-bill-transfer>span{overflow-wrap:anywhere}
+.split-bill-balance-row strong,.split-bill-transfer b{white-space:nowrap}
+.split-bill-balance-row .positive{color:#15805c}.split-bill-balance-row .negative{color:#b45309}.split-bill-balance-row .neutral{color:#718198}
+.split-bill-transfer b{color:#3978e8}.split-bill-muted{margin:12px 0 0}
+@media(max-width:480px){.split-bill-balances{padding:15px}.split-bill-balance-row,.split-bill-transfer{align-items:flex-start;flex-direction:column;gap:5px}}
+
+/* Step 2.3C — Settle Up */
+.split-bill-transfer-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+.split-bill-settle-btn{border:1px solid #3978e8;background:#3978e8;color:white;border-radius:9px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.split-bill-settle-btn:hover:not(:disabled){background:#285fc5}
+.split-bill-settle-btn:disabled{opacity:.55;cursor:not-allowed}
+.split-bill-settle-form{margin-top:18px;padding:18px;border:1px solid #bfd5fb;border-radius:14px;background:white}
+.split-bill-settle-form h3{margin:0 0 8px}.split-bill-settle-form p{margin:0 0 12px;font-size:13px}
+.split-bill-settle-form small{display:block;margin-top:9px;color:#718198;font-size:12px;line-height:1.6}
+@media(max-width:480px){.split-bill-transfer-actions{justify-content:flex-start}}
+
+/* Step 2.3D — Edit / Undo Settlement */
+.split-bill-payment-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.split-bill-payment-buttons{display:flex;gap:8px}
+.split-bill-payment-buttons button{background:#eef4ff;color:#3978e8;border:1px solid #c9dafa;border-radius:8px;padding:6px 10px;font-weight:700;font-size:12px;cursor:pointer}
+.split-bill-payment-buttons .split-bill-undo-btn{background:#fff4f4;color:#b43a3a;border-color:#f1cccc}
+.split-bill-payment-buttons button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:480px){.split-bill-entry{flex-wrap:wrap}.split-bill-payment-actions{align-items:flex-start}}
+
+/* 2.3J: standalone styling when embedded in Expenses (without Groups.css) */
+.expenses-page .split-bill-section{margin:28px var(--space-edge,36px);padding:26px;border:1px solid #e8edf5;border-radius:18px;background:#fff;box-shadow:0 4px 16px rgba(37,65,112,.035)}
+.expenses-page .split-bill-section h2{font-size:20px;margin:0 0 6px;color:#25334a}
+.expenses-page .split-bill-section h3{font-size:16px;margin:18px 0 12px;color:#25334a}
+.expenses-page .split-bill-section label{display:block;margin:12px 0 7px;font-size:13px;font-weight:700;color:#34445d}
+.expenses-page .split-bill-section input:not([type=checkbox]){display:block;width:100%;min-height:44px;padding:10px 13px;border:1px solid #e1e8f3;border-radius:11px;background:#f8faff;color:#25334a;font:inherit}
+.expenses-page .split-bill-section .group-form-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-top:20px}
+.expenses-page .split-bill-section .save-group-button,.expenses-page .split-bill-section .cancel-group-button{min-height:42px;padding:10px 16px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer}
+.expenses-page .split-bill-section .save-group-button{background:#3978e8;border:1px solid #3978e8;color:#fff}
+.expenses-page .split-bill-section .cancel-group-button{background:#f3f6fb;border:1px solid #e1e8f3;color:#56657b}
+.expenses-page .split-bill-section .groups-error{color:#b42318;background:#fff1f1;padding:12px;border-radius:10px}
+.expenses-page .split-bill-section .groups-message{color:#17845a;background:#f2fbf7;padding:12px;border-radius:10px}
+@media(max-width:600px){.expenses-page .split-bill-section{margin:24px 20px;padding:18px}}
+
+/* Step 2.3K: proof requests */
+.split-bill-section .proof-status{text-transform:capitalize;font-weight:700;border-radius:7px;padding:3px 8px;background:#f1f5f9;color:#64748b}
+.split-bill-section .proof-confirmed{background:#e6f7ee;color:#16805a}
+.split-bill-section .proof-pending{background:#fff5df;color:#9a6600}
+.split-bill-section .proof-rejected{background:#fff0f0;color:#b53e3e}
+.split-bill-entry a{color:#3978e8;font-size:12px;overflow-wrap:anywhere}
+
+.split-proof-toolbar{display:flex;justify-content:flex-end;margin:8px 0 14px}
+
+/* Step 2.9B — card refinement */
+.split-bill-section .split-bill-entry { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .split-bill-section :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .split-bill-section :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .split-bill-section :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}
+
+
+/* Step 2.9C — keep split-bill entries readable on small screens */
+.split-bill-section, .split-bill-entry, .split-bill-preview { min-width: 0; }
+.split-bill-entry > div { min-width: 0; overflow-wrap: anywhere; }
+.split-bill-preview > div > * { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 420px) {
+  .split-bill-entry { flex-wrap: wrap; }
+  .split-bill-entry > b { white-space: normal; overflow-wrap: anywhere; }
+}

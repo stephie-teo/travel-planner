@@ -137,3 +137,124 @@
 .expense-progress .progress-bar.over-budget {
   background: #dc3545;
 }
+/* Step 2.3F: group spending summary and unified read-only Split Bill history */
+.expense-split-overview{margin:0 20px 24px;padding:18px;border:1px solid #dce8fc;border-radius:17px;background:#f7faff;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.expense-split-overview>div{padding:12px;background:#fff;border:1px solid #e8edf5;border-radius:12px;min-width:0}
+.expense-split-overview span{display:block;font-size:12px;color:#71819a;margin-bottom:8px}
+.expense-split-overview strong{font-size:19px;color:#25334a;overflow-wrap:anywhere}
+.expense-split-overview p{grid-column:1/-1;margin:0;color:#64748b;font-size:12px;line-height:1.6}
+.expense-history-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.expense-history-filters button{padding:9px 14px;border-radius:10px;border:1px solid #dce8fc;background:#fff;color:#3978e8;font-size:12px;font-weight:700;cursor:pointer}
+.expense-history-filters button.active{background:#3978e8;color:#fff;border-color:#3978e8}
+.expense-type-badge{display:inline-block;vertical-align:middle;padding:3px 7px;border-radius:7px;background:#eaf2ff;color:#3978e8;font-size:10px;font-weight:700;margin-left:5px}
+.expense-type-other{background:#f0f4f8;color:#64748b}
+.expense-sync-note{margin:0 20px 12px;font-size:12px;color:#64748b}
+@media(max-width:650px){.expense-split-overview{grid-template-columns:1fr}.expense-card{align-items:flex-start}.expense-right{max-width:46%}}
+
+/* Step 2.3H: visual refresh */
+.expenses-page{--travel-blue:#3978e8;--travel-ink:#152b50;--travel-border:#e3eaf6;color:var(--travel-ink)}
+.expenses-page .expense-summary>div,.expenses-page .expense-split-overview,.expenses-page .expense-group-selector,.expenses-page .expense-list,.expenses-page .expense-form{border:1px solid var(--travel-border);box-shadow:0 8px 26px rgba(35,70,120,.055);border-radius:18px}
+.expenses-page input,.expenses-page select,.expenses-page textarea{transition:border-color .18s,box-shadow .18s}
+.expenses-page input:focus-visible,.expenses-page select:focus-visible,.expenses-page textarea:focus-visible{outline:none;border-color:#3978e8;box-shadow:0 0 0 3px rgba(57,120,232,.12)}
+.expenses-page button{transition:transform .15s,box-shadow .15s,background .15s}
+.expenses-page button:not(:disabled):hover{transform:translateY(-1px)}
+.personal-group-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.personal-group-overview>div{background:linear-gradient(145deg,#fff,#f3f8ff);border:1px solid #dce8fc;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:7px}
+.personal-group-overview span{font-size:12px;font-weight:700;color:#61789a}.personal-group-overview strong{font-size:22px;color:#153a77}.personal-group-overview small{color:#647a98;font-size:11px;line-height:1.5}
+@media(max-width:700px){.personal-group-overview{grid-template-columns:1fr}.personal-group-overview>div{padding:14px}}
+
+/* Step 2.3H.1 — Airy, border-light layout. Visual-only patch. */
+.expenses-page{--space-edge:clamp(24px,5vw,64px);background:#fff}
+.expenses-page .expenses-header{padding:38px var(--space-edge) 28px}
+.expenses-page .expense-mode-switch{margin:28px var(--space-edge) 38px;gap:12px}
+.expenses-page .expense-group-selector{margin:0 var(--space-edge) 44px;padding:0 0 26px;border:0;border-bottom:1px solid #edf1f7;border-radius:0;background:transparent;box-shadow:none}
+.expenses-page .expense-group-selector select{max-width:520px;background:#fff}
+.expenses-page .assigned-panel,.expenses-page .private-expenses-panel{margin:0 var(--space-edge) 48px;padding:32px 34px;border:0;border-radius:24px;background:#f8faff;box-shadow:none}
+.expenses-page .assigned-panel{background:#f7f9fd}
+.expenses-page .private-expenses-panel{background:#f8faff}
+.expenses-page .assigned-panel h2,.expenses-page .private-panel-heading h2{font-size:23px;letter-spacing:-.4px}
+.expenses-page .assigned-form{margin:28px 0;gap:26px}
+.expenses-page .assigned-members{border:0;border-radius:17px;padding:22px 24px;background:#fff}
+.expenses-page .assigned-member-row{padding:18px 0}
+.expenses-page .assigned-mode label{border:0;background:#fff;padding:13px 16px}
+.expenses-page .assigned-history{border:0;border-bottom:1px solid #e6ebf3;border-radius:0;background:transparent;margin:0;padding:21px 4px}
+.expenses-page .assigned-totals{margin:0 var(--space-edge) 44px;padding:18px 0 22px;border:0;border-bottom:1px solid #e8edf5;border-radius:0;background:transparent;gap:10px 28px}
+.expenses-page .assigned-totals small{line-height:1.7}
+.expenses-page .personal-group-overview{margin:0 var(--space-edge) 40px;gap:24px}
+.expenses-page .personal-group-overview>div{border:0;border-radius:0;border-left:3px solid #d9e6fc;padding:8px 0 8px 20px;background:transparent;gap:9px}
+.expenses-page .personal-group-overview strong{font-size:clamp(21px,2vw,27px)}
+.expenses-page .expense-summary{margin:0 var(--space-edge) 42px;gap:30px}
+.expenses-page .expense-summary>div{padding:8px 0 12px 22px;border:0;border-left:3px solid #e1eaf9;border-radius:0;background:transparent;box-shadow:none}
+.expenses-page .expense-summary>div:first-child,.expenses-page .expense-summary>div:nth-child(2),.expenses-page .expense-summary>div:last-child{background:transparent;border-color:#dce8fa}
+.expenses-page .expense-summary>div:hover{transform:none;box-shadow:none}
+.expenses-page .expense-summary h2{font-size:clamp(20px,2.2vw,29px)}
+.expenses-page .expense-split-overview{margin:0 var(--space-edge) 44px;padding:25px 28px;gap:18px;background:#f7f9fc;border:0;border-radius:20px;box-shadow:none}
+.expenses-page .expense-split-overview>div{padding:4px 8px;background:transparent;border:0;border-right:1px solid #dfe7f2;border-radius:0}
+.expenses-page .expense-split-overview>div:nth-child(3){border-right:0}
+.expenses-page .expense-split-overview p{margin-top:8px;line-height:1.8}
+.expenses-page .expense-progress{margin:0 var(--space-edge) 48px;padding:0;background:transparent;border:0;border-radius:0}
+.expenses-page .expense-form{margin:0 var(--space-edge) 44px;max-width:none;padding:30px 34px;border:0;background:#f8faff;box-shadow:none}
+.expenses-page .category-section,.expenses-page .expense-list{margin:0 var(--space-edge) 48px}
+.expenses-page .expense-list{border:0;box-shadow:none}
+.expenses-page .category-card{border:0;background:#f7f9fd;box-shadow:none}
+.expenses-page .expense-card{border:0;border-bottom:1px solid #edf0f6;border-radius:0;background:#fff;box-shadow:none;margin:0;padding:22px 8px}
+.expenses-page .expense-card:hover{transform:none;box-shadow:none}
+.expenses-page .expense-planned-total{margin:0 var(--space-edge) 36px}
+.expenses-page .private-form{padding:24px;gap:20px;border:0;background:#fff}
+.expenses-page .private-record{padding:21px 2px}
+.expenses-page .private-disclaimer{margin-top:26px}
+.expenses-page .expenses-error,.expenses-page .expense-sync-note{margin-left:var(--space-edge);margin-right:var(--space-edge)}
+@media(max-width:700px){
+ .expenses-page{--space-edge:20px}
+ .expenses-page .assigned-panel,.expenses-page .private-expenses-panel{padding:24px 20px;margin-bottom:34px;border-radius:18px}
+ .expenses-page .personal-group-overview{grid-template-columns:1fr;gap:16px}
+ .expenses-page .expense-summary{grid-template-columns:1fr;gap:22px}
+ .expenses-page .expense-summary>div{padding:5px 0 5px 16px}
+ .expenses-page .expense-split-overview{grid-template-columns:1fr;padding:20px;gap:18px}
+ .expenses-page .expense-split-overview>div{border-right:0;border-bottom:1px solid #e3eaf3;padding-bottom:16px}
+ .expenses-page .expense-split-overview>div:nth-child(3){border-bottom:0}
+ .expenses-page .assigned-members{padding:16px}
+ .expenses-page .assigned-fields,.expenses-page .assigned-member-row{grid-template-columns:1fr}
+ .expenses-page .expense-form{padding:22px}
+ .expenses-page .private-form{padding:16px}
+}
+
+/* Step 2.9B — card refinement */
+.expenses-page .expense-form,.expenses-page .expense-summary,.expenses-page .expense-card { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .expenses-page :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .expenses-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .expenses-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}
+
+/* Step 3.1B: a single Shared Expenses entry area using the existing safe data sources. */
+.shared-entry-shell { margin: 18px 0; padding: 20px; border: 1px solid #dce7fa; border-radius: 16px; background: #fff; }
+.shared-entry-shell > h2 { margin: 0 0 8px; }
+.shared-entry-shell > p { color: #536579; }
+.shared-entry-options { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 10px; }
+.shared-entry-options button { cursor: pointer; border: 1px solid #c9d9f5; border-radius: 10px; padding: 10px 16px; background: #f6f9ff; color: #23456f; font-weight: 600; }
+.shared-entry-options button.selected { color: #fff; background: #3978e8; border-color: #3978e8; }
+.shared-entry-hint { font-size: 0.92rem; }
+
+/* Step 3.1C UI-only: one shared expense form, no Individual Costs section */
+.expenses-page .shared-entry-shell {margin: 0 var(--space-edge) 36px; padding: 28px; border: 0; border-radius: 22px; background: #f7f9fd;}
+.expenses-page .shared-entry-shell > h2 {font-size: 23px; color: #152b50;}
+.expenses-page .unified-shared-form {margin-top: 22px; padding: 22px; background: #fff; border-radius: 18px;}
+.expenses-page .unified-form-heading h3 {margin: 0 0 6px; font-size: 18px;}
+.expenses-page .unified-form-heading p {margin: 0 0 22px; color: #64748b; font-size: 13px;}
+.expenses-page .unified-form-grid {display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px 20px;}
+.expenses-page .unified-form-grid label {font-size: 13px; font-weight: 650; color: #34445d;}
+.expenses-page .unified-form-grid input,.expenses-page .unified-form-grid select,.expenses-page .unified-person input[type=number] {display:block; width:100%; min-width:0; min-height:44px; margin-top:7px; padding:10px 12px; border:1px solid #dfe8f5; border-radius:11px; background:#f8faff; color:#25334a; font:inherit;}
+.expenses-page .unified-participants {border:1px solid #e3eaf6; border-radius:14px; margin:22px 0 14px; padding:12px 16px;}
+.expenses-page .unified-participants legend {font-weight:700; color:#34445d; padding:0 8px;}
+.expenses-page .unified-person {display:flex; justify-content:space-between; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid #edf1f7;}
+.expenses-page .unified-person:last-child {border-bottom:0;}
+.expenses-page .unified-person label {display:flex; align-items:center; gap:10px; font-size:14px;}
+.expenses-page .unified-person input[type=checkbox] {accent-color:#3978e8; width:17px; height:17px;}
+.expenses-page .unified-person input[type=number] {max-width:150px; margin-top:0;}
+.expenses-page .unified-person strong {font-size:14px; color:#3978e8;}
+.expenses-page .unified-note {font-size:12px; line-height:1.6; color:#64748b;}
+.expenses-page .unified-error {color:#b91c1c;} .expenses-page .unified-success {color:#15803d;}
+.expenses-page .unified-shared-form button[type=submit] {border:0; border-radius:12px; padding:12px 20px; background:#3978e8; color:#fff; font-weight:700; cursor:pointer;}
+.expenses-page .unified-shared-form button[type=submit]:disabled {opacity:.5;}
+@media(max-width:650px){.expenses-page .shared-entry-shell{padding:18px 14px}.expenses-page .unified-shared-form{padding:16px}.expenses-page .unified-form-grid{grid-template-columns:1fr}}

@@ -49,3 +49,11 @@
  .trip-settings-page .date-row{grid-template-columns:1fr;gap:0}
  .trip-settings-page .trip-preview{padding:18px}
 }
+
+/* Step 2.9B — card refinement */
+.trip-settings-page .settings-card,.trip-settings-page .trip-preview { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .trip-settings-page :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .trip-settings-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .trip-settings-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}

@@ -96,3 +96,50 @@
  .place-actions button,.place-actions a{padding:7px 9px}
  .places-page>.empty-state{margin:16px}
 }
+
+/* Step 2.5A — Travel Inspiration */
+.inspiration-subtitle{display:block;color:#8190a8;font-size:12px;margin-top:7px}
+.inspiration-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.inspiration-section-heading span{font-size:12px;color:#8290a6}
+.inspiration-tools{margin:0 0 22px}.inspiration-tools>input{width:100%;max-width:420px;padding:12px 15px;border:1px solid #dfe8f5;border-radius:12px;outline:none;color:#25334a;background:#f8faff}.inspiration-tools>input:focus{border-color:#3978e8}
+.inspiration-filters{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.inspiration-filter{display:inline-flex;align-items:center;gap:6px;border:1px solid #e2e9f5;border-radius:999px;padding:9px 13px;background:#fff;color:#586982;font-weight:700;font-size:12px;cursor:pointer}.inspiration-filter span{font-size:11px;color:#8190a6;background:#f1f5fb;border-radius:99px;padding:2px 6px}.inspiration-filter.selected{background:#3978e8;color:#fff;border-color:#3978e8}.inspiration-filter.selected span{background:#ffffff33;color:white}
+.inspiration-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.inspiration-grid .place-card{margin:0;min-height:185px;padding:18px;align-items:flex-start}.inspiration-grid .place-icon{width:45px;height:45px}.inspiration-grid .place-info{display:flex;flex-direction:column;align-items:flex-start}.inspiration-grid .place-actions{margin-top:15px}.inspiration-tag{display:inline-flex!important;width:max-content;padding:5px 10px;border-radius:999px;font-size:11px!important;margin-top:9px!important;border:1px solid transparent}
+.inspiration-tag.inspiration-sightseeing{background:#f0eaff;color:#7b4dc0;border-color:#e8d9ff}.inspiration-tag.inspiration-food{background:#fff0e7;color:#c26023;border-color:#ffe1c8}.inspiration-tag.inspiration-cafe{background:#fff4dd;color:#946519;border-color:#f7e5b7}.inspiration-tag.inspiration-shopping{background:#ffeafa;color:#aa4a90;border-color:#f7d7ef}.inspiration-tag.inspiration-photo-spots{background:#e6f7fb;color:#197f9b;border-color:#c8edf6}.inspiration-tag.inspiration-nature{background:#e9f8ed;color:#267f4b;border-color:#d0efd8}.inspiration-tag.inspiration-other{background:#f0f3f8;color:#59687f;border-color:#e0e6f0}
+.inspiration-food .place-icon{background:#fff0e7}.inspiration-cafe .place-icon{background:#fff4dd}.inspiration-sightseeing .place-icon{background:#f0eaff}.inspiration-shopping .place-icon{background:#ffeafa}.inspiration-photo-spots .place-icon{background:#e6f7fb}.inspiration-nature .place-icon{background:#e9f8ed}
+.inspiration-notes{margin:10px 0 0;color:#5b6c84;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.place-form textarea{display:block;width:100%;min-height:90px;margin-top:8px;padding:12px;border:1px solid #e1e8f3;border-radius:11px;background:#f8faff;color:#25334a;font:inherit;resize:vertical}
+@media(max-width:760px){.inspiration-grid{grid-template-columns:1fr}}@media(max-width:480px){.inspiration-grid .place-card{min-height:0}.inspiration-filters{gap:7px}.inspiration-filter{padding:8px 10px}}
+
+/* Step 2.5B — Add to Itinerary */
+.places-page .inspiration-add-itinerary{background:#3978e8;color:#fff;border-color:#3978e8;font-weight:750}
+.places-page .inspiration-add-itinerary:hover{background:#285fc5;color:#fff}
+.inspiration-itinerary-feedback{margin:14px 20px;padding:13px 16px;background:#eaf6ef;color:#187447;border:1px solid #cbead7;border-radius:12px;font-size:13px}
+.inspiration-itinerary-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(20,35,60,.5);padding:16px}
+.inspiration-itinerary-dialog{width:min(100%,440px);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:26px;box-shadow:0 22px 65px rgba(0,0,0,.2);color:#25334a}
+.inspiration-itinerary-dialog h2{margin:0 0 12px;font-size:21px}
+.inspiration-itinerary-name{font-weight:750;margin:0 0 6px;font-size:16px}
+.inspiration-itinerary-context{font-size:13px;color:#758196;margin:0 0 20px}
+.inspiration-itinerary-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.inspiration-itinerary-fields label{font-size:13px;font-weight:700;min-width:0}
+.inspiration-itinerary-fields input{display:block;margin-top:8px;width:100%;min-width:0;border:1px solid #dce5f3;border-radius:10px;padding:11px;background:#f8faff;color:#25334a}
+.inspiration-itinerary-error{color:#b91c1c;font-size:13px;line-height:1.5}
+.inspiration-itinerary-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
+.inspiration-itinerary-buttons button{padding:11px 16px;border:1px solid #dce5f3;border-radius:10px;background:#f3f6fb;color:#42526a;cursor:pointer;font-weight:700}
+.inspiration-itinerary-buttons button[type=submit]{background:#3978e8;color:white;border-color:#3978e8}
+.inspiration-itinerary-buttons button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:420px){.inspiration-itinerary-fields{grid-template-columns:1fr}}
+
+/* Step 2.9B — card refinement */
+.places-page .place-form,.places-page .place-card,.places-page .inspiration-itinerary-dialog { border-radius: 16px; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .places-page :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .places-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) { flex-wrap: wrap; gap: 10px; }
+  .places-page :where(.form-buttons,.assigned-actions,.private-form-actions,.split-bill-payment-buttons) > button { min-width: 0; flex: 1 1 135px; }
+}
+
+
+/* Step 2.9C — itinerary picker fits small phones and the visible viewport */
+.inspiration-itinerary-overlay { box-sizing: border-box; overflow-y: auto; }
+.inspiration-itinerary-dialog { box-sizing: border-box; min-width: 0; max-height: calc(100dvh - 32px); overscroll-behavior: contain; }
+@media (max-width: 480px) {
+  .inspiration-itinerary-overlay { padding: 12px; }
+  .inspiration-itinerary-dialog { padding: 18px; max-height: calc(100dvh - 24px); }
+}
