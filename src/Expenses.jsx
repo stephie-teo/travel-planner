@@ -140,6 +140,8 @@ function Expenses({
   const [splitLoading, setSplitLoading] = useState(false);
   const [splitError, setSplitError] = useState("");
   const [expenseFilter, setExpenseFilter] = useState("all");
+  const [editingShared, setEditingShared] = useState(null);
+  const [sharedActionError, setSharedActionError] = useState("");
 
   const [personalBudget, setPersonalBudget] = useState(0);
 
@@ -207,11 +209,13 @@ function Expenses({
     ...selectedGroup, memberNames: { ...(selectedGroup.memberNames || {}), ...memberNames }
   } : null, [selectedGroup, memberNames]);
 
+  const budgetPerPerson = Number(selectedGroup?.tripSettings?.budget) || 0;
+  const groupMemberCount = selectedGroup?.memberIds?.length || 0;
   const budget =
 
     mode === "group"
 
-      ? Number(selectedGroup?.tripSettings?.budget) || 0
+      ? budgetPerPerson * groupMemberCount
 
       : personalBudget;
 
@@ -465,6 +469,7 @@ function Expenses({
     setSplitBills([]);
     setSplitError("");
     setExpenseFilter("all");
+    setEditingShared(null);
     if (mode !== "group" || !selectedGroupId || !uid) {
       setSplitLoading(false);
       return;
@@ -559,14 +564,33 @@ function Expenses({
   const privatePlanned = mode === "group" ? privateExpenses.reduce((s,x)=>s+(Number(x.plannedAmount)||0),0) : 0;
   const myKnownSpent = privateSpent + (myAssignedActualCents + mySplitShareCents) / 100;
   const totalSpent = otherSpent + splitTotalCents / 100 + assignedUnpaidActualCents / 100; // shared total excludes private purchases
+  const mySharedSpent = (myAssignedActualCents + mySplitShareCents) / 100;
+  const myRemainingBudget = budgetPerPerson - mySharedSpent;
+  const deleteSharedExpense = async (kind, expense) => {
+    if (kind === "split" && assignedExpenses.some(x => x.linkedBillId === expense.id)) { setSharedActionError("This older expense is linked to another record. It cannot be deleted here safely."); return; }
+    if (!window.confirm(`Delete "${expense.title}"? This changes everyone’s spending and balances. Recorded repayments will not be deleted.`)) return;
+    setSharedActionError("");
+    try {
+      const source = kind === "split" ? "splitBills" : "assignedExpenses";
+      await deleteDoc(doc(db, "groups", selectedGroupId, source, expense.id));
+      if (editingShared?.expense?.id === expense.id) setEditingShared(null);
+    } catch (err) { setSharedActionError(`Unable to delete: ${err.code || err.message}`); }
+  };
+  const editSharedExpense = (kind, expense) => {
+    if (kind === "split" && assignedExpenses.some(x => x.linkedBillId === expense.id)) { setSharedActionError("This older expense is linked to another record. It cannot be edited here safely."); return; }
+    setEditingShared({kind, expense});
+    document.getElementById("shared-expense-manager")?.scrollIntoView({behavior:"smooth", block:"start"});
+  };
   const filteredPrivate = mode === "group" && (expenseFilter === "all" || expenseFilter === "private") ? privateExpenses : [];
   const filteredExpenses = mode !== "group" || expenseFilter === "all"
     ? expenses : expenseFilter === "other" ? expenses : [];
-  const filteredSplitBills = mode === "group" && expenseFilter !== "other" ? splitBills : [];
+  const filteredSplitBills = mode === "group" ? splitBills : [];
+  const filteredPlans = mode === "group" ? assignedExpenses.filter(x => !x.linkedBillId) : [];
   const combinedHistory = [
     ...filteredExpenses.map((expense) => ({ kind: "other", expense })),
     ...filteredPrivate.map((expense) => ({ kind: "private", expense })),
     ...filteredSplitBills.map((expense) => ({ kind: "split", expense })),
+    ...filteredPlans.map((expense) => ({ kind: "plan", expense })),
   ].sort((a, b) => (b.expense.date || "").localeCompare(a.expense.date || ""));
 
   // Planned assigned costs are counted once; paid assigned costs are already in splitBills.
@@ -608,10 +632,8 @@ function Expenses({
           total + (Number(expense.actualAmount) || 0),
 
         0
-
-      );
-
-
+      ) + (mode === "group" ? splitBills.filter(x => (x.category || "Other") === category)
+        .reduce((n,x) => n + (Number(x.amountCents) || 0)/100, 0) : 0);
 
   const handleChange = (event) => {
 
@@ -1156,8 +1178,9 @@ function Expenses({
           {mode === "group" && selectedGroup && (
             <section className="shared-entry-shell" id="shared-expense-manager" aria-label="Shared expenses">
               <h2>🤝 Shared Expenses</h2>
-              <p>One shared group budget. Add planned or paid expenses in one simple form. Private purchases stay separate.</p>
-              <SharedExpenseForm group={splitBillGroup} />
+              <p>One simple form for all shared expenses. Each person has their own budget.</p>
+              <SharedExpenseForm group={splitBillGroup} editing={editingShared} onCancel={() => setEditingShared(null)} onSaved={() => setEditingShared(null)} />
+              {sharedActionError && <p className="expenses-error">{sharedActionError}</p>}
             </section>
           )}
           {mode === "group" && assignedError && <p className="expenses-error">{assignedError}</p>}
@@ -1167,7 +1190,9 @@ function Expenses({
           {mode === "group" && privateError && <p className="expenses-error">{privateError}</p>}
           {mode === "group" && (
             <section className="personal-group-overview" aria-label="Shared expense information">
-              <div><span>Shared group budget</span><strong>RM {money(budget)}</strong><small>One budget for everyone, set by the group owner</small></div>
+              <div><span>Budget per person</span><strong>RM {money(budgetPerPerson)}</strong><small>Each member has the same budget</small></div>
+              <div><span>Total group budget ({groupMemberCount} members)</span><strong>RM {money(budget)}</strong><small>Per-person budget × group members</small></div>
+              <div><span>My shared spending</span><strong>RM {money(mySharedSpent)}</strong><small>My share, regardless of who paid · Remaining RM {money(myRemainingBudget)}</small></div>
               <div><span>Shared spending</span><strong>RM {money(totalSpent)}</strong><small>Each group expense counted once; repayments are not expenses</small></div>
               <div><span>My private spending</span><strong>RM {money(privateSpent)}</strong><small>Visible only to you; excluded from the group budget</small></div>
             </section>
@@ -1211,7 +1236,7 @@ function Expenses({
               <div><span>Other group expenses</span><strong>RM {money(otherSpent)}</strong></div>
               <div><span>Shared split expenses</span><strong>RM {money(splitTotalCents / 100)}</strong></div>
               <div><span>My share of split expenses</span><strong>RM {money(mySplitShareCents / 100)}</strong></div>
-              <p>Group Spent includes shared expenses only, not members’ private purchases. Your share covers Split Bill records only; other group expenses have no per-person allocation. Settlements do not increase spending.</p>
+              <p>Group spending counts shared expenses once. Your spending uses your allocated shares; legacy unallocated expenses are excluded from personal shares. Repayments are not expenses.</p>
             </section>
           )}
 
@@ -1457,29 +1482,34 @@ function Expenses({
 
 
           <section className="expense-list">
-            <h2>{mode === "group" ? "All Group Expense History" : "Recent Expenses"}</h2>
-            {mode === "group" && (
-              <div className="expense-history-filters" aria-label="Filter group expense history">
-                {[["all", "All"], ["other", "Legacy Group"], ["split", "Shared Paid"], ["private", "My Private"]].map(([value, label]) => (
-                  <button type="button" key={value} className={expenseFilter === value ? "active" : ""}
-                    onClick={() => setExpenseFilter(value)}>{label}</button>
-                ))}
-              </div>
-            )}
+            <h2>{mode === "group" ? "Expense History" : "Recent Expenses"}</h2>
+
             {combinedHistory.length === 0 ? (
               <div className="empty-state"><span>💸</span><p>No expenses in this view.</p></div>
             ) : combinedHistory.map(({ kind, expense }) => kind === "split" ? (
               <div className="expense-card" key={`split-${expense.id}`}>
                 <div className="expense-icon">🤝</div>
                 <div className="expense-info">
-                  <h3>{expense.title || "Shared expense"} <span className="expense-type-badge">Split Bill</span></h3>
+                  <h3>{expense.title || "Shared expense"} <span className="expense-type-badge">Paid</span></h3>
                   <p>{formatDate(expense.date)} · Split between {expense.splitWith?.length || expense.shares?.length || 0} members</p>
                   <p>Your share: RM {money((expense.shares?.find((share) => share.uid === uid)?.amountCents || 0) / 100)}</p>
                 </div>
                 <div className="expense-right">
                   <strong>RM {money((expense.amountCents || 0) / 100)}</strong>
                   <small>Full group expense</small>
-                  <button type="button" onClick={() => document.getElementById("shared-expense-manager")?.scrollIntoView({ behavior: "smooth", block: "start" })}>View shared expenses ↑</button>
+                  <button type="button" onClick={() => editSharedExpense("split", expense)}>✏️ Edit</button>
+                  <button type="button" onClick={() => deleteSharedExpense("split", expense)}>Delete</button>
+                </div>
+              </div>
+            ) : kind === "plan" ? (
+              <div className="expense-card" key={`plan-${expense.id}`}>
+                <div className="expense-icon">🗓️</div>
+                <div className="expense-info"><h3>{expense.title || "Planned expense"} <span className="expense-type-badge">Planned</span></h3>
+                  <p>{expense.category} · {formatDate(expense.date)}</p></div>
+                <div className="expense-right">
+                  <strong>RM {money((expense.allocations || []).reduce((n,a)=>n+(Number(a.plannedCents)||0),0)/100)}</strong>
+                  <button type="button" onClick={() => editSharedExpense("plan", expense)}>✏️ Edit</button>
+                  <button type="button" onClick={() => deleteSharedExpense("plan", expense)}>Delete</button>
                 </div>
               </div>
             ) : kind === "private" ? (
@@ -1494,7 +1524,7 @@ function Expenses({
               <div className="expense-card" key={`other-${expense.id}`}>
                 <div className="expense-icon">{categoryIcon(expense.category)}</div>
                 <div className="expense-info">
-                  <h3>{expense.description} {mode === "group" && <span className="expense-type-badge expense-type-other">Other Group</span>}</h3>
+                  <h3>{expense.description} {mode === "group" && <span className="expense-type-badge expense-type-other">Shared</span>}</h3>
                   <p>{expense.category} · {formatDate(expense.date)}</p>
                 </div>
                 <div className="expense-right">
@@ -1509,7 +1539,7 @@ function Expenses({
 
           <p className="expense-planned-total">
 
-            Planned group expenses: RM {money(totalPlanned)}
+            Planned shared expenses: RM {money(totalPlanned)}
 
           </p>
 

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "./firebase";
 
-const categories = ["Flight", "Hotel", "Insurance", "Transport", "Activities", "Other"];
+const categories = ["Food", "Flight", "Hotel", "Insurance", "Transport", "Shopping", "Activities", "Other"];
 const toCents = value => {
   const s = String(value).trim();
   if (!/^(?:\d+)(?:\.\d{1,2})?$/.test(s)) return null;
@@ -13,7 +13,7 @@ const toCents = value => {
 const money = cents => (cents / 100).toFixed(2);
 const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
 
-export default function SharedExpenseForm({ group, onSaved }) {
+export default function SharedExpenseForm({ group, onSaved, editing = null, onCancel }) {
   const members = useMemo(() => group?.memberIds || [], [group?.memberIds]);
   const uid = auth.currentUser?.uid;
   const [title, setTitle] = useState("");
@@ -28,7 +28,18 @@ export default function SharedExpenseForm({ group, onSaved }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  useEffect(() => { setParticipants([...members]); setPayerId(members.includes(uid) ? uid : members[0] || ""); setCustom({}); }, [group?.id, members.join("|"), uid]);
+  useEffect(() => {
+    if (!editing) { setTitle(""); setDate(today()); setCategory("Hotel"); setAmount(""); setStatus("paid"); setSplitType("equal"); setCustom({}); return; }
+    const record = editing.expense;
+    const isPaid = editing.kind === "split";
+    const allocations = isPaid ? (record.shares || []).map(x => ({uid:x.uid, amountCents:x.amountCents})) : (record.allocations || []).map(x => ({uid:x.uid, amountCents:x.plannedCents || x.actualCents || 0}));
+    const sum = allocations.reduce((n,x) => n + x.amountCents, 0);
+    setTitle(record.title || ""); setDate(record.date || today()); setCategory(record.category || "Other"); setAmount(money(isPaid ? record.amountCents : sum));
+    setStatus(isPaid ? "paid" : "plan"); setPayerId(record.payerId || uid || ""); setSplitType("custom");
+    setParticipants(allocations.map(x => x.uid)); setCustom(Object.fromEntries(allocations.map(x => [x.uid, money(x.amountCents)])));
+    setError(""); setSuccess("");
+  }, [editing?.expense?.id, editing?.kind, group?.id]);
+  useEffect(() => { if (editing) return; setParticipants([...members]); setPayerId(members.includes(uid) ? uid : members[0] || ""); setCustom({}); }, [group?.id, members.join("|"), uid, !!editing]);
   const nameOf = id => group?.memberNames?.[id] || group?.memberProfiles?.[id]?.displayName || (id === uid ? "You" : `Member ${id.slice(-6)}`);
   const cents = toCents(amount);
   const shares = useMemo(() => {
@@ -49,9 +60,23 @@ export default function SharedExpenseForm({ group, onSaved }) {
     if (status === "paid" && !members.includes(payerId)) return setError("Select who paid.");
     setBusy(true);
     try {
-      if (status === "paid") {
+      if (editing) {
+        const record = editing.expense;
+        if (editing.kind === "split") {
+          await updateDoc(doc(db, "groups", group.id, "splitBills", record.id), {
+            title: title.trim(), date, category, amountCents: cents, payerId,
+            splitWith: participants, shares, updatedBy: uid, updatedAt: serverTimestamp(),
+          });
+        } else {
+          await updateDoc(doc(db, "groups", group.id, "assignedExpenses", record.id), {
+            title: title.trim(), date, category,
+            allocations: shares.map(x => ({uid:x.uid, plannedCents:x.amountCents, actualCents:0})),
+            updatedBy: uid, updatedAt: serverTimestamp(),
+          });
+        }
+      } else if (status === "paid") {
         await addDoc(collection(db, "groups", group.id, "splitBills"), {
-          title: title.trim(), date, amountCents: cents, currency: "MYR", payerId,
+          title: title.trim(), date, category, amountCents: cents, currency: "MYR", payerId,
           splitWith: participants, shares, createdBy: uid, createdAt: serverTimestamp(),
         });
       } else {
@@ -61,18 +86,18 @@ export default function SharedExpenseForm({ group, onSaved }) {
           paymentMode: "plan", payerId: "", linkedBillId: "", createdBy: uid, createdAt: serverTimestamp(),
         });
       }
-      setTitle(""); setAmount(""); setCustom({}); setSuccess(status === "paid" ? "Shared expense saved. Balances updated." : "Planned expense saved. No debt created yet."); onSaved?.();
+      if (!editing) { setTitle(""); setAmount(""); setCustom({}); } setSuccess(editing ? "Expense updated. Review any existing settlements." : status === "paid" ? "Shared expense saved. Balances updated." : "Planned expense saved. No debt created yet."); onSaved?.();
     } catch (err) { console.error(err); setError(`Could not save: ${err.code || err.message}`); }
     finally { setBusy(false); }
   };
   return <form className="unified-shared-form" onSubmit={submit}>
-    <div className="unified-form-heading"><h3>+ Add Shared Expense</h3><p>One form for hotel, food, transport and group plans.</p></div>
+    <div className="unified-form-heading"><h3>{editing ? "Edit Shared Expense" : "+ Add Shared Expense"}</h3><p>One form for hotel, food, transport and group plans.</p></div>
     <div className="unified-form-grid">
       <label>Expense Name<input required maxLength={120} value={title} onChange={e=>setTitle(e.target.value)} placeholder="e.g. Tokyo Hotel" /></label>
       <label>Date<input required type="date" value={date} onChange={e=>setDate(e.target.value)} /></label>
       <label>Category<select value={category} onChange={e=>setCategory(e.target.value)}>{categories.map(x=><option key={x}>{x}</option>)}</select></label>
       <label>Total Amount (RM)<input required type="number" min="0.01" max="1000000" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)} placeholder="600.00" /></label>
-      <label>Status<select value={status} onChange={e=>setStatus(e.target.value)}><option value="paid">Paid</option><option value="plan">Planned</option></select></label>
+      <label>Status<select value={status} disabled={!!editing} onChange={e=>setStatus(e.target.value)}><option value="paid">Paid</option><option value="plan">Planned</option></select></label>
       {status === "paid" && <label>Paid By<select value={payerId} onChange={e=>setPayerId(e.target.value)}>{members.map(id=><option key={id} value={id}>{nameOf(id)}</option>)}</select></label>}
       <label>Split Method<select value={splitType} onChange={e=>setSplitType(e.target.value)}><option value="equal">Equal Split</option><option value="custom">Custom Amount</option></select></label>
     </div>
@@ -80,10 +105,19 @@ export default function SharedExpenseForm({ group, onSaved }) {
       const checked = participants.includes(id); const share = shares.find(s=>s.uid===id);
       return <div className="unified-person" key={id}><label><input type="checkbox" checked={checked} onChange={e=>setParticipants(current=>e.target.checked?[...current,id]:current.filter(x=>x!==id))}/><span>{nameOf(id)}</span></label>{checked && (splitType === "equal" ? <strong>RM {share?.amountCents == null ? "—" : money(share.amountCents)}</strong> : <input type="number" min="0" step="0.01" placeholder="RM" aria-label={`Share for ${nameOf(id)}`} value={custom[id] ?? ""} onChange={e=>setCustom(c=>({...c,[id]:e.target.value}))}/>)}</div>;
     })}</fieldset>
-    {status === "plan" && <p className="unified-note">Planned expenses count toward planned budget only. No one owes money until the expense is marked Paid in the legacy editor.</p>}
+    {status === "plan" && <p className="unified-note">Planned expenses count toward planned budget only. No debts are created for planned expenses.</p>}
     {status === "paid" && <p className="unified-note">Paid expenses count once toward Group Spending. Debts are calculated automatically from the payer and shares.</p>}
     {splitType === "custom" && cents !== null && <p className="unified-note">Allocated RM {money(shares.reduce((sum,s)=>sum+(s.amountCents || 0),0))} / RM {money(cents)}</p>}
     {error && <p className="unified-error" role="alert">{error}</p>}{success && <p className="unified-success" role="status">{success}</p>}
-    <button type="submit" disabled={busy || !validShares}>{busy ? "Saving..." : "Save Shared Expense"}</button>
+    <div className="shared-expense-actions" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+      <button type="submit" disabled={busy || !validShares}>
+        {busy ? "Saving..." : editing ? "Save Changes" : "Save Shared Expense"}
+      </button>
+      {editing && (
+        <button type="button" className="shared-expense-cancel-btn" style={{ marginLeft: 0 }} onClick={onCancel}>
+          Cancel
+        </button>
+      )}
+    </div>
   </form>;
 }

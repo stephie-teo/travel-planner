@@ -718,7 +718,9 @@ useEffect(() => {
     validStartDate &&
     validEndDate &&
     endDate >= startDate;
-  const budget = Number(dashboardTrip?.budget) || 0;
+  const perPersonBudget = Number(dashboardTrip?.budget) || 0;
+  const memberCount = isGroupDashboard ? (selectedGroup?.memberIds?.length || 0) : 1;
+  const budget = isGroupDashboard ? perPersonBudget * memberCount : perPersonBudget;
   const tripDuration = validTripDates
     ? Math.round(
         (endDate - startDate) / (1000 * 60 * 60 * 24)
@@ -1277,7 +1279,7 @@ useEffect(() => {
                   <div className={`budget-card ${isGroupDashboard ? "budget-card-group" : ""}`}>
                     <div className="budget-top">
                       <div>
-                        <p className="budget-caption">{isGroupDashboard ? "SHARED GROUP BUDGET" : "TOTAL TRIP BUDGET"}</p>
+                        <p className="budget-caption">{isGroupDashboard ? "TOTAL GROUP BUDGET" : "TOTAL TRIP BUDGET"}</p>
                         <h3>RM {budget.toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
                       </div>
                       <div className="budget-top-actions">
@@ -1301,10 +1303,10 @@ useEffect(() => {
                           <div className="budget-metric"><span className="metric-dot spent-dot" /><p>Group Spending</p><strong>RM {dashboardTotalSpent.toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
                         </div>
                         <div className="budget-group-total">
-                          <div><span>Shared Expenses Total</span><strong>RM {(groupDashboardData?.groupSharedSpent || 0).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
-                          <span className="budget-group-tag">Group total</span>
+                          <div><span>Budget per person</span><strong>RM {perPersonBudget.toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
+                          <span className="budget-group-tag">{memberCount} members</span>
                         </div>
-                        <p className="budget-group-note">One shared budget for the whole group. The group owner can edit it in My Groups → Shared Trip Settings. Private expenses and repayments are excluded.</p>
+                        <p className="budget-group-note">Each member has the budget shown above. Total group budget = per-person budget × members. The owner can edit the per-person budget in My Groups. Private expenses and repayments are excluded.</p>
                       </>
                     ) : (
                       <>

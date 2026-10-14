@@ -865,7 +865,7 @@ function Groups() {
                   </label>
                 </div>
                 <label htmlFor="sharedBudget">
-                  Budget (RM)
+                  Budget per person (RM)
                 </label>
                 <input
                   id="sharedBudget"
@@ -880,7 +880,7 @@ function Groups() {
                 />
                 <div className="trip-preview">
                   <p className="preview-label">
-                    SHARED TRIP PREVIEW
+                    GROUP TRIP PREVIEW
                   </p>
                   <h3>
                     ✈️ {tripSettings.name || "My Trip"}
@@ -893,7 +893,7 @@ function Groups() {
                     {formatDate(tripSettings.endDate)}
                   </p>
                   <p>
-                    💰 RM{" "}
+                    💰 Per person: RM{" "}
                     {Number(tripSettings.budget || 0).toLocaleString(
                       "en-MY",
                       { maximumFractionDigits: 2 }

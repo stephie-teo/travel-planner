@@ -258,3 +258,27 @@
 .expenses-page .unified-shared-form button[type=submit] {border:0; border-radius:12px; padding:12px 20px; background:#3978e8; color:#fff; font-weight:700; cursor:pointer;}
 .expenses-page .unified-shared-form button[type=submit]:disabled {opacity:.5;}
 @media(max-width:650px){.expenses-page .shared-entry-shell{padding:18px 14px}.expenses-page .unified-shared-form{padding:16px}.expenses-page .unified-form-grid{grid-template-columns:1fr}}
+.shared-expense-cancel-btn {
+  padding: 11px 22px;
+  border: 1px solid #d7e3f7;
+  border-radius: 10px;
+  background: #f3f6fc;
+  color: #526582;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 12px;
+}
+
+.shared-expense-cancel-btn:hover {
+  background: #e8eef9;
+  border-color: #b9ccef;
+}
+
+.shared-expense-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
