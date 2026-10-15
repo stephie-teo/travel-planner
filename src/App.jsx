@@ -407,6 +407,7 @@ useEffect(() => {
       myPlanned: ownPrivatePlanned + ownAssignedPlannedCents / 100,
       privateSpent: ownPrivateActual,
       splitShare: ownSplitCents / 100,
+      mySharedSpent: (ownAssignedActualCents + ownSplitCents) / 100,
       trip: {
         ...EMPTY_TRIP,
         name: tripSettings.name || groupData.name || "",
@@ -721,6 +722,9 @@ useEffect(() => {
   const perPersonBudget = Number(dashboardTrip?.budget) || 0;
   const memberCount = isGroupDashboard ? (selectedGroup?.memberIds?.length || 0) : 1;
   const budget = isGroupDashboard ? perPersonBudget * memberCount : perPersonBudget;
+  const personalTotalSpent = isGroupDashboard ? (groupDashboardData?.myActualSpent || 0) : dashboardTotalSpent;
+  const personalRemaining = perPersonBudget - personalTotalSpent;
+  const personalUsedPercentage = perPersonBudget > 0 ? Math.min(100, Math.max(0, (personalTotalSpent / perPersonBudget) * 100)) : 0;
   const tripDuration = validTripDates
     ? Math.round(
         (endDate - startDate) / (1000 * 60 * 60 * 24)
@@ -1306,7 +1310,18 @@ useEffect(() => {
                           <div><span>Budget per person</span><strong>RM {perPersonBudget.toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
                           <span className="budget-group-tag">{memberCount} members</span>
                         </div>
-                        <p className="budget-group-note">Each member has the budget shown above. Total group budget = per-person budget × members. The owner can edit the per-person budget in My Groups. Private expenses and repayments are excluded.</p>
+                        <div className="budget-personal-summary" aria-label="My travel budget">
+                          <div className="budget-personal-heading"><span>MY TRAVEL BUDGET</span><strong>RM {perPersonBudget.toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
+                          <div className="budget-personal-breakdown">
+                            <div><span>My shared spending</span><strong>RM {(groupDashboardData?.mySharedSpent || 0).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
+                            <div><span>My private spending</span><strong>RM {(groupDashboardData?.privateSpent || 0).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
+                            <div><span>My total spending</span><strong>RM {personalTotalSpent.toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
+                            <div><span>{personalRemaining < 0 ? "Over personal budget" : "My remaining budget"}</span><strong className={personalRemaining < 0 ? "budget-negative" : "budget-personal-positive"}>RM {Math.abs(personalRemaining).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
+                          </div>
+                          <div className="budget-progress-heading"><span>Personal budget used</span><strong>{Math.round(personalUsedPercentage)}%</strong></div>
+                          <div className="progress" role="progressbar" aria-label="Personal budget used" aria-valuenow={Math.round(personalUsedPercentage)} aria-valuemin={0} aria-valuemax={100}><div className="progress-bar" style={{ width: `${personalUsedPercentage}%` }} /></div>
+                        </div>
+                        <p className="budget-group-note">Group spending counts shared expenses once. Your personal spending includes your allocated shared expenses and private expenses. Repayments are excluded. The owner can edit the per-person budget in My Groups.</p>
                       </>
                     ) : (
                       <>

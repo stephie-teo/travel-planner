@@ -282,3 +282,6 @@
   gap: 12px;
   flex-wrap: wrap;
 }
+
+/* Step 3.4: personal trip total */
+.expenses-page .personal-group-overview > .personal-total-card { border-left-color: #3978e8; background: #f4f8ff; border-radius: 0 12px 12px 0; padding-right: 12px; }

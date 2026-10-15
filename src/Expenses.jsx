@@ -565,7 +565,8 @@ function Expenses({
   const myKnownSpent = privateSpent + (myAssignedActualCents + mySplitShareCents) / 100;
   const totalSpent = otherSpent + splitTotalCents / 100 + assignedUnpaidActualCents / 100; // shared total excludes private purchases
   const mySharedSpent = (myAssignedActualCents + mySplitShareCents) / 100;
-  const myRemainingBudget = budgetPerPerson - mySharedSpent;
+  const myTotalSpent = mySharedSpent + privateSpent;
+  const myRemainingBudget = budgetPerPerson - myTotalSpent;
   const deleteSharedExpense = async (kind, expense) => {
     if (kind === "split" && assignedExpenses.some(x => x.linkedBillId === expense.id)) { setSharedActionError("This older expense is linked to another record. It cannot be deleted here safely."); return; }
     if (!window.confirm(`Delete "${expense.title}"? This changes everyone’s spending and balances. Recorded repayments will not be deleted.`)) return;
@@ -1192,9 +1193,10 @@ function Expenses({
             <section className="personal-group-overview" aria-label="Shared expense information">
               <div><span>Budget per person</span><strong>RM {money(budgetPerPerson)}</strong><small>Each member has the same budget</small></div>
               <div><span>Total group budget ({groupMemberCount} members)</span><strong>RM {money(budget)}</strong><small>Per-person budget × group members</small></div>
-              <div><span>My shared spending</span><strong>RM {money(mySharedSpent)}</strong><small>My share, regardless of who paid · Remaining RM {money(myRemainingBudget)}</small></div>
+              <div><span>My shared spending</span><strong>RM {money(mySharedSpent)}</strong><small>Your allocated share, regardless of who paid</small></div>
               <div><span>Shared spending</span><strong>RM {money(totalSpent)}</strong><small>Each group expense counted once; repayments are not expenses</small></div>
-              <div><span>My private spending</span><strong>RM {money(privateSpent)}</strong><small>Visible only to you; excluded from the group budget</small></div>
+              <div><span>My private spending</span><strong>RM {money(privateSpent)}</strong><small>Visible only to you; excluded from group spending</small></div>
+              <div className="personal-total-card"><span>My total spending</span><strong>RM {money(myTotalSpent)}</strong><small>Shared share + private expenses · Remaining RM {money(myRemainingBudget)}</small></div>
             </section>
           )}
           <section className="expense-summary">

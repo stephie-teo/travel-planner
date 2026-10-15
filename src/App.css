@@ -3191,3 +3191,15 @@ html, body, #root { min-width: 0; overflow-x: clip; }
 .profile-save { border: 1px solid #3978e8; background: #3978e8; color: white; }
 .profile-save-toast { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 1999; padding: 11px 17px; border-radius: 12px; background: #e9f8ef; border: 1px solid #bde6cc; color: #16683d; box-shadow: 0 5px 18px rgba(0,0,0,.08); font-size: 13px; }
 @media (max-width: 480px) { .profile-modal { padding: 20px; } .profile-modal-actions button { flex: 1; } }
+
+/* Step 3.4: personal travel budget */
+.budget-personal-summary { margin-top: 20px; padding: 18px; border: 1px solid #dce8fc; border-radius: 15px; background: #f7faff; }
+.budget-personal-heading { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.budget-personal-heading span { color: #567399; font-size: 11px; font-weight: 800; letter-spacing: .08em; }
+.budget-personal-heading strong { color: #193e79; font-size: 19px; }
+.budget-personal-breakdown { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.budget-personal-breakdown > div { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.budget-personal-breakdown span { color: #6c7f99; font-size: 11px; }
+.budget-personal-breakdown strong { color: #203957; font-size: 16px; overflow-wrap: anywhere; }
+.budget-personal-breakdown .budget-personal-positive { color: #17815b; }
+@media (max-width: 420px) { .budget-personal-summary { padding: 14px; } .budget-personal-breakdown strong { font-size: 14px; } }
