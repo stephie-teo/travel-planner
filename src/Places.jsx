@@ -41,21 +41,32 @@ const EMPTY_PLACE = {
 
   name: "",
 
-  category: "Sightseeing",
+  category: "Photo Ideas",
 
   location: "",
 
   mapsUrl: "",
+  inspirationUrl: "",
+  notes: "",
 
 };
 
 
 
-const CATEGORIES = ["Sightseeing", "Food", "Cafe", "Photo Spots", "Shopping", "Nature", "Other"];
+const CATEGORIES = ["Photo Ideas", "Content Ideas", "Sightseeing", "Food", "Cafe", "Photo Spots", "Shopping", "Nature", "Other"];
 const CATEGORY_ICONS = {
-  Sightseeing: "🏯", Food: "🍜", Cafe: "☕", "Photo Spots": "📸",
+  "Photo Ideas": "📷", "Content Ideas": "🎬", Sightseeing: "🏯", Food: "🍜", Cafe: "☕", "Photo Spots": "📸",
   Shopping: "🛍️", Nature: "🌿", Other: "✨",
 };
+const INSPIRATION_FILTERS = [
+  { label: "All", icon: "✨", categories: null },
+  { label: "Places", icon: "📍", categories: ["Sightseeing", "Nature"] },
+  { label: "Food & Cafe", icon: "🍜", categories: ["Food", "Cafe"] },
+  { label: "Photo & Content", icon: "📷", categories: ["Photo Spots", "Photo Ideas", "Content Ideas"] },
+  { label: "Shopping", icon: "🛍️", categories: ["Shopping"] },
+  { label: "Other", icon: "✨", categories: ["Other"] },
+];
+const isIdeaCategory = (category) => ["Photo Ideas", "Content Ideas", "Photo Spots", "Other"].includes(category);
 const categoryClass = (category) => String(category || "Other").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 const safeLink = (url) => {
   if (!url || typeof url !== "string") return "";
@@ -157,6 +168,7 @@ function Places({
 
 
   const [showForm, setShowForm] = useState(false);
+  const [showOptionalTripDetails, setShowOptionalTripDetails] = useState(false);
 
   const [editingId, setEditingId] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -445,6 +457,7 @@ useEffect(() => {
     setEditingId(null);
 
     setShowForm(false);
+    setShowOptionalTripDetails(false);
 
   };
 
@@ -514,9 +527,9 @@ useEffect(() => {
 
 
 
-    if (!newPlace.name.trim() || !newPlace.location.trim()) {
+    if (!newPlace.name.trim()) {
 
-      setError("Please enter the place name and location.");
+      setError("Please enter a title for your inspiration.");
 
       return;
 
@@ -639,6 +652,7 @@ useEffect(() => {
 
   const handleEdit = (place) => {
 
+    setShowOptionalTripDetails(Boolean(place.date || place.location || place.mapsUrl));
     setNewPlace({
 
       date: place.date || "",
@@ -856,7 +870,11 @@ useEffect(() => {
 
 
 
-  const filteredPlaces = places.filter((place) => (activeCategory === "All" || place.category === activeCategory) && `${place.name || ""} ${place.location || ""} ${place.notes || ""}`.toLowerCase().includes(searchTerm.toLowerCase().trim()));
+  const selectedInspirationFilter = INSPIRATION_FILTERS.find((filter) => filter.label === activeCategory) || INSPIRATION_FILTERS[0];
+  const filteredPlaces = places.filter((place) =>
+    (!selectedInspirationFilter.categories || selectedInspirationFilter.categories.includes(place.category || "Other")) &&
+    `${place.name || ""} ${place.location || ""} ${place.notes || ""}`.toLowerCase().includes(searchTerm.toLowerCase().trim())
+  );
   const sortedPlaces = [...filteredPlaces].sort((a, b) =>
 
     (a.date || "").localeCompare(b.date || "")
@@ -1062,130 +1080,32 @@ useEffect(() => {
 
           <div className="place-form-grid">
 
-          <label>
-
-            Date
-
-            <input
-
-              type="date"
-
-              name="date"
-
-              value={newPlace.date}
-
-              onChange={handleChange}
-
-            />
-
-          </label>
-
-
-
           <label className="place-field-wide">
-
-            Place Name
-
-            <input
-
-              type="text"
-
-              name="name"
-
-              placeholder="e.g. Tokyo Tower"
-
-              value={newPlace.name}
-
-              onChange={handleChange}
-
-              required
-
-            />
-
+            Title *
+            <input type="text" name="name" placeholder="e.g. 杭州拍照姿勢 / Tokyo food ideas" value={newPlace.name} onChange={handleChange} required />
           </label>
-
-
-
-          <label>
-
+          <label className="place-field-wide">
             Category
-
-            <select
-
-              name="category"
-
-              value={newPlace.category}
-
-              onChange={handleChange}
-
-            >
-
-              {CATEGORIES.map((category) => (
-
-                <option key={category} value={category}>
-
-                  {category}
-
-                </option>
-
-              ))}
-
+            <select name="category" value={newPlace.category} onChange={handleChange}>
+              {CATEGORIES.map((category) => <option key={category} value={category}>{category}</option>)}
             </select>
-
           </label>
-
-
-
-          <label className="place-field-wide">
-
-            Location
-
-            <input
-
-              type="text"
-
-              name="location"
-
-              placeholder="e.g. Minato, Tokyo"
-
-              value={newPlace.location}
-
-              onChange={handleChange}
-
-              required
-
-            />
-
-          </label>
-
-
-
-          <label className="place-field-wide">
-
-            Google Maps Link
-
-            <input
-
-              type="url"
-
-              name="mapsUrl"
-
-              placeholder="Paste Google Maps link"
-
-              value={newPlace.mapsUrl}
-
-              onChange={handleChange}
-
-            />
-
-          </label>
-
             <label className="place-field-wide">Instagram / TikTok / YouTube / Blog Link
               <input type="url" name="inspirationUrl" value={newPlace.inspirationUrl} onChange={handleChange} placeholder="https://..." />
             </label>
-            <label className="place-field-wide">Notes / Why save this place?
-              <textarea name="notes" value={newPlace.notes} onChange={handleChange} placeholder="Must-try dish, photo angle, opening hours..." rows={3} maxLength={1500} />
+            <label className="place-field-wide">Remarks
+              <textarea name="notes" value={newPlace.notes} onChange={handleChange} placeholder="Add any remarks..." rows={3} maxLength={1500} />
             </label>
+            <div className="place-field-wide inspiration-optional-trip">
+              <button type="button" className="inspiration-optional-toggle" aria-expanded={showOptionalTripDetails} onClick={() => setShowOptionalTripDetails((v) => !v)}>
+                {showOptionalTripDetails ? "▾" : "▸"} Add Trip Details (Optional)
+              </button>
+              {showOptionalTripDetails && <div className="inspiration-optional-fields">
+                <label>Date (Optional)<input type="date" name="date" value={newPlace.date} onChange={handleChange} /></label>
+                <label>Location (Optional)<input type="text" name="location" placeholder="e.g. Minato, Tokyo" value={newPlace.location} onChange={handleChange} /></label>
+                <label className="place-field-wide">Google Maps Link (Optional)<input type="url" name="mapsUrl" placeholder="Paste Google Maps link" value={newPlace.mapsUrl} onChange={handleChange} /></label>
+              </div>}
+            </div>
           </div>
 
           <div className="form-buttons">
@@ -1206,9 +1126,9 @@ useEffect(() => {
 
                 : editingId !== null
 
-                  ? "Update Place"
+                  ? "Update Inspiration"
 
-                  : "Add Place"}
+                  : "Save Inspiration"}
 
             </button>
 
@@ -1260,54 +1180,13 @@ useEffect(() => {
 
           <>
 
-            <div className="places-summary">
-
-              <div>
-
-                <strong>{places.length}</strong>
-
-                <span>Total Places</span>
-
-              </div>
-
-
-
-              <div>
-
-                <strong>
-
-                  {places.filter((place) => place.visited).length}
-
-                </strong>
-
-                <span>Visited</span>
-
-              </div>
-
-
-
-              <div>
-
-                <strong>
-
-                  {places.filter((place) => !place.visited).length}
-
-                </strong>
-
-                <span>Remaining</span>
-
-              </div>
-
-            </div>
-
-
-
-            <div className="inspiration-section-heading"><h2>{mode === "group" ? "Shared Inspiration" : "My Inspiration"}</h2><span>{filteredPlaces.length} shown</span></div>
+            <div className="inspiration-section-heading"><h2>{mode === "group" ? "Shared Inspiration" : "My Inspiration"}</h2><span>{places.length} saved inspirations</span></div>
             <div className="inspiration-tools">
               <input aria-label="Search inspiration" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="🔎 Search places or notes..." />
               <div className="inspiration-filters" aria-label="Filter by category">
-                {["All", ...CATEGORIES].map((category) => <button type="button" key={category} className={`inspiration-filter ${activeCategory === category ? "selected" : ""}`} onClick={() => setActiveCategory(category)}>{category === "All" ? "✨" : getCategoryIcon(category)} {category} <span>{category === "All" ? places.length : places.filter((p) => p.category === category).length}</span></button>)}
+                {INSPIRATION_FILTERS.map((filter) => <button type="button" key={filter.label} aria-pressed={activeCategory === filter.label} className={`inspiration-filter ${activeCategory === filter.label ? "selected" : ""}`} onClick={() => setActiveCategory(filter.label)}>{filter.icon} {filter.label}</button>)}
               </div>
+              <div className="inspiration-results-count" role="status">Showing {filteredPlaces.length} of {places.length}{activeCategory !== "All" ? ` · ${activeCategory}` : ""}</div>
             </div>
 
 
@@ -1320,17 +1199,13 @@ useEffect(() => {
 
                 <p>
 
-                  {mode === "group"
-
-                    ? "No shared places added yet."
-
-                    : "No places added yet."}
+                                    {places.length > 0 ? "No inspirations match your filters." : mode === "group" ? "No shared places added yet." : "No places added yet."}
 
                 </p>
 
                 <small>
 
-                  Add your first place to start planning.
+                  {places.length > 0 ? "Try another category or search term." : "Add your first place to start planning."}
 
                 </small>
 
@@ -1359,99 +1234,35 @@ useEffect(() => {
                   <div className="place-info">
 
                     <div className="place-title-row">
-
                       <h3>{place.name}</h3>
-
-
-
-                      {place.visited && (
-
-                        <span className="visited-badge">
-
-                          ✓ Visited
-
-                        </span>
-
-                      )}
-
+                      <details className="inspiration-card-menu">
+                        <summary aria-label={`More actions for ${place.name}`} title="More actions">⋯</summary>
+                        <div className="inspiration-card-menu-items">
+                          <button type="button" onClick={() => openItineraryForm(place)}>＋ Add to Itinerary</button>
+                          <button type="button" onClick={() => handleEdit(place)}>✏️ Edit</button>
+                          <button type="button" className="delete-place" onClick={() => handleDelete(place.id)}>Delete</button>
+                        </div>
+                      </details>
                     </div>
-
-
 
                     <span className={`place-category inspiration-tag inspiration-${categoryClass(place.category)}`}>{getCategoryIcon(place.category)} {place.category}</span>
-
-                    <p className="place-location">📍 {place.location}</p>
-
+                    {place.location && <p className="place-location">📍 {place.location}</p>}
                     {place.notes && <p className="inspiration-notes">{place.notes}</p>}
-                    <p className="place-date">
 
-                      📅 {formatDate(place.date)}
-
-                    </p>
-
-
-
-                    <div className="place-actions">
-
-                      <button type="button" className="inspiration-add-itinerary" onClick={() => openItineraryForm(place)}>
-                        + Add to Itinerary
-                      </button>
-
-                      <button onClick={() => handleEdit(place)}>
-
-                        ✏️ Edit
-
-                      </button>
-
-
-
-                      <button onClick={() => handleToggleVisited(place)}>
-
-                        {place.visited
-
-                          ? "↩ Mark Unvisited"
-
-                          : "✓ Mark Visited"}
-
-                      </button>
-
-
-
-                      {safeLink(place.inspirationUrl) && <a href={safeLink(place.inspirationUrl)} target="_blank" rel="noopener noreferrer">🔗 Inspiration</a>}
-                      {place.mapsUrl && safeLink(place.mapsUrl) && (
-
-                        <a
-
-                          href={place.mapsUrl}
-
-                          target="_blank"
-
-                          rel="noopener noreferrer"
-
-                        >
-
-                          🗺️ Maps
-
-                        </a>
-
+                    <div className="place-actions inspiration-card-actions">
+                      {safeLink(place.inspirationUrl) && (
+                        <a className="inspiration-view-link" href={safeLink(place.inspirationUrl)} target="_blank" rel="noopener noreferrer">↗ View Inspiration</a>
                       )}
-
-
-
-                      <button
-
-                        className="delete-place"
-
-                        onClick={() => handleDelete(place.id)}
-
-                      >
-
-                        Delete
-
+                      <button type="button" className="inspiration-done-btn" onClick={() => handleToggleVisited(place)}>
+                        {place.visited
+                          ? (isIdeaCategory(place.category) ? "↩ Mark Not Done" : "↩ Mark Unvisited")
+                          : (isIdeaCategory(place.category) ? "✓ Mark Done" : "✓ Mark Visited")}
                       </button>
-
+                      {place.mapsUrl && safeLink(place.mapsUrl) && (
+                        <a href={safeLink(place.mapsUrl)} target="_blank" rel="noopener noreferrer">🗺️ Maps</a>
+                      )}
+                      {place.visited && <span className="inspiration-done-status">✓ {isIdeaCategory(place.category) ? "Done" : "Visited"}</span>}
                     </div>
-
                   </div>
 
                 </div>

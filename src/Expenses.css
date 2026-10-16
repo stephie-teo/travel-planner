@@ -285,3 +285,24 @@
 
 /* Step 3.4: personal trip total */
 .expenses-page .personal-group-overview > .personal-total-card { border-left-color: #3978e8; background: #f4f8ff; border-radius: 0 12px 12px 0; padding-right: 12px; }
+
+/* Step 3.5: clear personal-first spending, group totals on demand */
+.expenses-page .shared-personal-spotlight { background: #fff; border: 1px solid #dce7f8; border-radius: 17px; padding: 22px; margin: 18px 0 22px; display: flex; flex-direction: column; gap: 12px; }
+.shared-personal-spotlight > span { font-size: 13px; font-weight: 700; color: #5e7190; }
+.shared-personal-spotlight > strong { font-size: clamp(27px, 3vw, 36px); color: #163c78; font-variant-numeric: tabular-nums; }
+.shared-personal-budget-line { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: #61748e; font-size: 12px; }
+.shared-personal-budget-line span:last-child { color: #168257; font-weight: 700; }
+.shared-personal-budget-line .is-over { color: #bd4040 !important; }
+.shared-personal-progress { background: #e6edf7; border-radius: 99px; height: 9px; overflow: hidden; }
+.shared-personal-progress > div { background: #3978e8; height: 100%; border-radius: inherit; }
+.shared-personal-split { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; border-top: 1px solid #e8edf6; padding-top: 16px; }
+.shared-personal-split > div { display: flex; flex-direction: column; gap: 7px; }
+.shared-personal-split span { color: #697c97; font-size: 12px; }
+.shared-personal-split strong { color: #1e3555; font-size: clamp(16px, 2vw, 21px); }
+.expenses-page .group-budget-details { margin: 0 var(--space-edge) 26px; border: 1px solid #e1e9f5; border-radius: 16px; background: #fafcff; padding: 16px 20px; }
+.group-budget-details > summary { cursor: pointer; font-weight: 700; color: #264b80; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.group-budget-details > summary span { font-weight: 500; color: #697c97; font-size: 12px; }
+.expenses-page .group-budget-details .personal-group-overview { margin: 22px 0; gap: 12px; }
+.expenses-page .group-budget-details .expense-summary { margin: 16px 0; gap: 16px; }
+.group-budget-explanation { color: #64748b; font-size: 12px; line-height: 1.6; }
+@media(max-width:650px){ .expenses-page .shared-personal-spotlight{padding:16px}.shared-personal-split{gap:8px}.expenses-page .group-budget-details{padding:14px} }

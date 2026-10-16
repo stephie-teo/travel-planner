@@ -1179,7 +1179,14 @@ function Expenses({
           {mode === "group" && selectedGroup && (
             <section className="shared-entry-shell" id="shared-expense-manager" aria-label="Shared expenses">
               <h2>🤝 Shared Expenses</h2>
-              <p>One simple form for all shared expenses. Each person has their own budget.</p>
+              <p>Add and split group expenses. Your personal spending is shown below.</p>
+              <div className="shared-personal-spotlight" aria-label="My travel spending">
+                <span>My Total Travel Spending</span>
+                <strong>RM {money(myTotalSpent)}</strong>
+                <div className="shared-personal-budget-line"><span>Personal budget RM {money(budgetPerPerson)}</span><span className={myRemainingBudget < 0 ? "is-over" : ""}>RM {money(myRemainingBudget)} left</span></div>
+                <div className="shared-personal-progress" role="progressbar" aria-label="Personal budget used" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.min(100, Math.max(0, budgetPerPerson > 0 ? Math.round(myTotalSpent / budgetPerPerson * 100) : 0))}><div style={{ width: `${budgetPerPerson > 0 ? Math.min(100, Math.max(0, myTotalSpent / budgetPerPerson * 100)) : 0}%` }} /></div>
+                <div className="shared-personal-split"><div><span>My Shared Spending</span><strong>RM {money(mySharedSpent)}</strong></div><div><span>My Private Spending</span><strong>RM {money(privateSpent)}</strong></div></div>
+              </div>
               <SharedExpenseForm group={splitBillGroup} editing={editingShared} onCancel={() => setEditingShared(null)} onSaved={() => setEditingShared(null)} />
               {sharedActionError && <p className="expenses-error">{sharedActionError}</p>}
             </section>
@@ -1189,56 +1196,26 @@ function Expenses({
             groupId={selectedGroupId} uid={uid} expenses={privateExpenses} onError={setPrivateError}
           />}
           {mode === "group" && privateError && <p className="expenses-error">{privateError}</p>}
-          {mode === "group" && (
-            <section className="personal-group-overview" aria-label="Shared expense information">
-              <div><span>Budget per person</span><strong>RM {money(budgetPerPerson)}</strong><small>Each member has the same budget</small></div>
-              <div><span>Total group budget ({groupMemberCount} members)</span><strong>RM {money(budget)}</strong><small>Per-person budget × group members</small></div>
-              <div><span>My shared spending</span><strong>RM {money(mySharedSpent)}</strong><small>Your allocated share, regardless of who paid</small></div>
-              <div><span>Shared spending</span><strong>RM {money(totalSpent)}</strong><small>Each group expense counted once; repayments are not expenses</small></div>
-              <div><span>My private spending</span><strong>RM {money(privateSpent)}</strong><small>Visible only to you; excluded from group spending</small></div>
-              <div className="personal-total-card"><span>My total spending</span><strong>RM {money(myTotalSpent)}</strong><small>Shared share + private expenses · Remaining RM {money(myRemainingBudget)}</small></div>
-            </section>
-          )}
-          <section className="expense-summary">
-
-            <div>
-
-              <p>Budget</p>
-
-              <h2>RM {money(budget)}</h2>
-
-            </div>
-
-
-
-            <div>
-
-              <p>Spent</p>
-
-              <h2>RM {money(totalSpent)}</h2>
-
-            </div>
-
-
-
-            <div>
-
-              <p>Remaining</p>
-
-              <h2 className={remaining < 0 ? "is-negative" : ""}>RM {money(remaining)}</h2>
-
-            </div>
-
-          </section>
-
-
-
-          {mode === "group" && (
-            <section className="expense-split-overview" aria-label="Group spending breakdown">
-              <div><span>Other group expenses</span><strong>RM {money(otherSpent)}</strong></div>
-              <div><span>Shared split expenses</span><strong>RM {money(splitTotalCents / 100)}</strong></div>
-              <div><span>My share of split expenses</span><strong>RM {money(mySplitShareCents / 100)}</strong></div>
-              <p>Group spending counts shared expenses once. Your spending uses your allocated shares; legacy unallocated expenses are excluded from personal shares. Repayments are not expenses.</p>
+          {mode === "group" ? (
+            <details className="group-budget-details">
+              <summary>Group Budget Details <span>RM {money(totalSpent)} spent of RM {money(budget)}</span></summary>
+              <section className="personal-group-overview" aria-label="Group budget overview">
+                <div><span>Budget per person</span><strong>RM {money(budgetPerPerson)}</strong></div>
+                <div><span>Total group budget ({groupMemberCount} members)</span><strong>RM {money(budget)}</strong></div>
+                <div><span>Shared group spending</span><strong>RM {money(totalSpent)}</strong></div>
+              </section>
+              <section className="expense-summary">
+                <div><p>Group Budget</p><h2>RM {money(budget)}</h2></div>
+                <div><p>Group Spent</p><h2>RM {money(totalSpent)}</h2></div>
+                <div><p>Group Remaining</p><h2 className={remaining < 0 ? "is-negative" : ""}>RM {money(remaining)}</h2></div>
+              </section>
+              <p className="group-budget-explanation">Group spending counts shared expenses once. Personal spending uses your allocated shares plus private expenses. Settlements are not counted again.</p>
+            </details>
+          ) : (
+            <section className="expense-summary">
+              <div><p>Budget</p><h2>RM {money(budget)}</h2></div>
+              <div><p>Spent</p><h2>RM {money(totalSpent)}</h2></div>
+              <div><p>Remaining</p><h2 className={remaining < 0 ? "is-negative" : ""}>RM {money(remaining)}</h2></div>
             </section>
           )}
 

@@ -143,3 +143,35 @@
   .inspiration-itinerary-overlay { padding: 12px; }
   .inspiration-itinerary-dialog { padding: 18px; max-height: calc(100dvh - 24px); }
 }
+
+/* Step 3.5: inspiration-first form; optional trip metadata */
+.inspiration-optional-trip { margin-top: 4px; }
+.inspiration-optional-toggle { width: 100%; text-align: left; padding: 12px 14px; border: 1px solid #dce6f6; border-radius: 10px; background: #f4f7fd; color: #315b94; font-weight: 650; cursor: pointer; }
+.inspiration-optional-toggle:hover { background: #eaf1ff; }
+.inspiration-optional-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; padding-top: 14px; }
+.inspiration-optional-fields label { display: flex; flex-direction: column; gap: 7px; }
+@media(max-width:600px){ .inspiration-optional-fields { grid-template-columns: 1fr; } }
+
+/* Step 3.6 — compact inspiration filters */
+.inspiration-tools{margin-bottom:20px}
+.inspiration-filters{gap:8px;margin-top:12px}
+.inspiration-filter{padding:8px 13px;font-weight:600;white-space:nowrap}
+.inspiration-results-count{margin-top:12px;font-size:12px;color:#8290a6}
+@media(max-width:480px){.inspiration-section-heading{align-items:flex-start}.inspiration-section-heading span{text-align:right}.inspiration-tools>input{max-width:100%}.inspiration-filters{gap:7px}.inspiration-filter{padding:8px 11px}}
+
+/* Step 3.7: simple inspiration card actions */
+.inspiration-grid .place-info{min-width:0;flex:1;width:100%}
+.inspiration-grid .place-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;width:100%}
+.inspiration-card-menu{position:relative;flex-shrink:0;z-index:2}
+.inspiration-card-menu[open]{z-index:10}
+.inspiration-card-menu summary{display:flex;align-items:center;justify-content:center;list-style:none;width:32px;height:32px;border:1px solid #dce8fc;border-radius:9px;background:#f5f8ff;color:#315c9d;cursor:pointer;font-size:22px;line-height:1}
+.inspiration-card-menu summary::-webkit-details-marker{display:none}
+.inspiration-card-menu-items{position:absolute;right:0;top:38px;display:flex;flex-direction:column;gap:3px;width:174px;padding:6px;border:1px solid #dce8fc;border-radius:12px;background:white;box-shadow:0 12px 30px rgba(30,55,90,.15)}
+.inspiration-card-menu-items button{width:100%;text-align:left;border:0;border-radius:7px;background:transparent;padding:10px;color:#28466f;font-size:12px;cursor:pointer}
+.inspiration-card-menu-items button:hover{background:#f0f5ff}
+.inspiration-card-menu-items .delete-place{color:#c74444}
+.inspiration-grid .inspiration-card-actions{width:100%;align-items:center;gap:9px;margin-top:auto;padding-top:15px}
+.inspiration-card-actions .inspiration-view-link{background:#3978e8;color:white;border-color:#3978e8}
+.inspiration-card-actions .inspiration-view-link:hover{background:#2868d8;color:white}
+.inspiration-done-status{font-size:11px;color:#17845a;font-weight:700;margin-left:auto}
+@media(max-width:480px){.inspiration-card-menu-items{width:165px}.inspiration-grid .inspiration-card-actions{gap:7px}}
